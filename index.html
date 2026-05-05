@@ -704,10 +704,6 @@
       min-height: 120px;
     }
 
-    form-group textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
 
     .phone-wrapper {
       display: flex;
@@ -1081,39 +1077,64 @@
             <div class="contact-detail-text"><strong>Web</strong><span>www.jankustones.cz</span></div>
           </div>
         </div>
-        <div class="contact-form">
+
+        <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+
+          <!-- TADY JE TEN POŠŤÁK: Místo textu VLOŽ_SVŮJ_KLÍČ vlož kód z e-mailu -->
+          <input type="hidden" name="access_key" value="661b1021-5424-4d0a-a9a1-80462faaf423">
+
+          <!-- Předmět e-mailu, který ti přijde -->
+          <input type="hidden" name="subject" value="Nová poptávka z webu - Brusičství Janků">
+
           <div class="form-row">
-            <div class="form-group"><label>Jméno</label><input type="text" placeholder="Vaše jméno"></div>
-            <div class="form-group"><label>E-mail</label><input type="email" placeholder="vas@email.cz"></div>
+            <div class="form-group">
+              <label>Jméno</label>
+              <input type="text" name="Jmeno" placeholder="Vaše jméno" required>
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" name="Email" placeholder="vas@email.cz" required>
+            </div>
           </div>
+
           <div class="form-group">
             <label>Telefonní číslo</label>
             <div class="phone-wrapper">
-              <select class="phone-prefix" title="Předvolba">
+              <select class="phone-prefix" name="Predvolba" title="Předvolba">
                 <option value="+420">+420 (CZ)</option>
                 <option value="+421">+421 (SK)</option>
                 <option value="+49">+49 (DE)</option>
                 <option value="+48">+48 (PL)</option>
-                <option>Jiné (napište do zprávy)</option>
+                <option value="Jiné">Jiné (napište do zprávy)</option>
               </select>
-              <input type="tel" placeholder="123 456 789" autocomplete="tel-national">
+              <input type="tel" name="Telefon" placeholder="123 456 789" autocomplete="tel-national">
             </div>
           </div>
-          <div class="form-group"><label>Zájem o</label>
-            <select>
-              <option value="">Vyberte kategorii...</option>
-              <option>Náušnice</option>
-              <option>Prsteny</option>
-              <option>Náhrdelníky</option>
-              <option>Náramky</option>
-              <option>Zakázková výroba</option>
-              <option>Broušení kamene</option>
+
+          <div class="form-group">
+            <label>Zájem o</label>
+            <select name="Kategorie">
+              <option value="Nevybráno">Vyberte kategorii...</option>
+              <option value="Náušnice">Náušnice</option>
+              <option value="Prsteny">Prsteny</option>
+              <option value="Náhrdelníky">Náhrdelníky</option>
+              <option value="Náramky">Náramky</option>
+              <option value="Zakázková výroba">Zakázková výroba</option>
+              <option value="Broušení kamene">Broušení kamene</option>
             </select>
           </div>
-          <div class="form-group"><label>Zpráva</label><textarea
-              placeholder="Popište, co hledáte, nebo se zeptejte na cokoliv..."></textarea></div>
-          <div><button class="btn btn-primary" type="submit">Odeslat zprávu</button></div>
-        </div>
+
+          <div class="form-group">
+            <label>Zpráva</label>
+            <textarea name="Zprava" placeholder="Popište, co hledáte, nebo se zeptejte na cokoliv..."
+              required></textarea>
+          </div>
+
+          <div>
+            <button class="btn btn-primary" type="submit">Odeslat zprávu</button>
+          </div>
+
+        </form>
       </div>
     </div>
   </section>
