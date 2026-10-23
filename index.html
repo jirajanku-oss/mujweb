@@ -1,83 +1,3942 @@
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brusičství Janků</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        .container {
-            background: #ffffff;
-            padding: 50px 60px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            max-width: 500px;
-            width: 85%;
-        }
-        .logo {
-            max-width: 250px;
-            height: auto;
-            margin-bottom: 25px;
-        }
-        h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.2em;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        .status {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .contact {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid #eaeaea;
-        }
-        .contact p {
-            margin: 12px 0;
-            font-size: 1.1em;
-        }
-        a {
-            color: #8c202a; /* Temně červená z loga */
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            color: #3a5c3a; /* Temně zelená z loga */
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brusičství Janků – Jiří Janků, brusič drahých kamenů</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Google tag (gtag.js) – Google Analytics s režimem souhlasu (Consent Mode v2).
+       Bez souhlasu v cookie liště se nic neměří a neukládají se žádné cookies.
+       ID měření měňte jen na tomto řádku: -->
+  <script>
+    window.GA_ID = 'G-8HZ9Z9XLFH';
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied'
+    });
+    gtag('js', new Date());
+
+    // Načte značku Google až po souhlasu návštěvníka
+    window.spustAnalytiku = function () {
+      if (!window.GA_ID || window.gaNacteno) return;
+      window.gaNacteno = true;
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      gtag('config', window.GA_ID);
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(window.GA_ID);
+      document.head.appendChild(s);
+    };
+
+    // Vracející se návštěvník, který už dříve souhlasil
+    try {
+      var souhlas = JSON.parse(localStorage.getItem('cookie-souhlas'));
+      if (souhlas && souhlas.analytika && Date.now() - souhlas.cas < 365 * 864e5) window.spustAnalytiku();
+    } catch (e) { }
+  </script>
+  <style>
+    :root {
+      --garnet: #8B1A2E;
+      --garnet-light: #A52840;
+      --garnet-dark: #5C0F1C;
+      --moldavite: #2D5A2E;
+      --cream: #FAF7F2;
+      --cream-mid: #F2EBE0;
+      --cream-dark: #E4D9CC;
+      --gold: #B8943C;
+      --gold-light: #D4AE5A;
+      --text: #2C1A14;
+      --text-muted: #7A5C48;
+      --section-alt: #F5EFE6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'EB Garamond', serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 247, 242, 0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--cream-dark);
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 1px 20px rgba(44, 26, 20, 0.06);
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      color: var(--text);
+      letter-spacing: 3px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo strong {
+      color: var(--garnet);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+      color: var(--garnet);
+    }
+
+    /* ROZBALOVACÍ MENU PRODUKTŮ */
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown > a::after {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      margin-left: 8px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: translateY(-3px) rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    .nav-submenu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      min-width: 220px;
+      list-style: none;
+      padding: 0.6rem 0;
+      margin-top: 17px;
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      border-top: 2px solid var(--garnet);
+      box-shadow: 0 12px 30px rgba(44, 26, 20, 0.12);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, 6px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+
+    /* neviditelný „můstek“, aby menu nezmizelo při přejezdu myší */
+    .nav-submenu::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -19px;
+      height: 19px;
+    }
+
+    .nav-dropdown:hover .nav-submenu,
+    .nav-dropdown:focus-within .nav-submenu,
+    .nav-dropdown.open .nav-submenu {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+
+    .nav-dropdown:hover > a::after,
+    .nav-dropdown:focus-within > a::after {
+      transform: translateY(0) rotate(225deg);
+    }
+
+    .nav-submenu:empty {
+      display: none;
+    }
+
+    .nav-submenu a {
+      display: block;
+      padding: 0.55rem 1.4rem;
+      white-space: nowrap;
+    }
+
+    .nav-submenu a:hover,
+    .nav-submenu a:focus-visible {
+      background: var(--cream-mid);
+      outline: none;
+    }
+
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 100px 2rem 60px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 10% 50%, rgba(139, 26, 46, 0.07) 0%, transparent 70%), radial-gradient(ellipse 50% 60% at 90% 50%, rgba(45, 90, 46, 0.06) 0%, transparent 70%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 80px;
+      left: 40px;
+      right: 40px;
+      bottom: 40px;
+      border: 1px solid rgba(184, 148, 60, 0.12);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      max-width: 820px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--garnet);
+      border: 1px solid rgba(139, 26, 46, 0.2);
+      padding: 7px 22px;
+      margin-bottom: 2.2rem;
+      text-transform: uppercase;
+      background: rgba(139, 26, 46, 0.04);
+      animation: fadeUp 1s ease both;
+    }
+
+    .hero-logo-gems {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 1s ease 0.1s both;
+    }
+
+    .nav-logo-image {
+      height: 30px;
+      width: auto;
+      margin-right: 15px;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      color: var(--text);
+      letter-spacing: 6px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+      animation: fadeUp 1s ease 0.2s both;
+    }
+
+    .hero h1 em {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.55em;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-top: 0.5rem;
+    }
+
+    .hero-divider {
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 2rem auto;
+      animation: fadeUp 1s ease 0.3s both;
+    }
+
+    .hero p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      font-style: italic;
+      max-width: 500px;
+      margin: 0 auto 2.8rem;
+      animation: fadeUp 1s ease 0.4s both;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    /* BUTTONS */
+    .btn {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 32px;
+      border: 1px solid;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--garnet);
+      color: var(--cream);
+      border-color: var(--garnet);
+    }
+
+    .btn-primary:hover {
+      background: var(--garnet-light);
+      border-color: var(--garnet-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 26, 46, 0.25);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--cream-dark);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--garnet);
+      color: var(--garnet);
+      transform: translateY(-2px);
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 100px 2rem;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 0.7rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      color: var(--garnet-dark);
+      text-align: center;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 540px;
+      margin: 0 auto 3.5rem;
+    }
+
+    /* O NÁS */
+    .about {
+      background: var(--section-alt);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong {
+      color: var(--garnet);
+      font-weight: 400;
+    }
+
+    .about-stones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stone-card {
+      background: white;
+      border: 1px solid var(--cream-dark);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .stone-card:hover {
+      border-color: var(--garnet);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(139, 26, 46, 0.1);
+    }
+
+    .stone-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stone-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .stone-card p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* PROCES */
+    .process {
+      background: var(--cream-mid);
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+      margin-top: 4rem;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--garnet), var(--gold), var(--moldavite));
+      opacity: 0.2;
+    }
+
+    .process-step {
+      text-align: center;
+      padding: 0 1.5rem;
+    }
+
+    .step-num {
+      width: 72px;
+      height: 72px;
+      border: 1px solid var(--garnet);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--garnet);
+      background: var(--cream);
+      position: relative;
+      z-index: 1;
+    }
+
+    .process-step h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+    }
+
+    .process-step p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* KATALOG ŠPERKŮ */
+    .catalog {
+      background: var(--cream);
+    }
+
+    .catalog-category {
+      margin-top: 5rem;
+      border-top: 1px solid var(--cream-dark);
+      padding-top: 4rem;
+    }
+
+    .catalog-category:first-of-type {
+      margin-top: 2rem;
+      border-top: none;
+      padding-top: 1rem;
+    }
+
+    .catalog-category-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: var(--garnet-dark);
+      text-align: center;
+      margin-bottom: 2.5rem;
+      letter-spacing: 2px;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .catalog-hidden-items {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .catalog-hidden-items.expanded {
+      display: grid;
+    }
+
+    .catalog-item {
+      background: white;
+      border: 1px solid var(--cream-dark);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .catalog-item:hover {
+      border-color: var(--garnet);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(139, 26, 46, 0.08);
+    }
+
+    .catalog-image-box {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--cream-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    .catalog-item h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .catalog-item .item-code {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .catalog-item .item-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin-top: 0.5rem;
+      min-height: 40px;
+    }
+
+    .catalog-item .item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--garnet);
+      font-style: italic;
+    }
+
+    .cart-icon {
+      position: absolute;
+      right: 1rem;
+      width: 44px;
+      height: 28px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .cart-icon:hover {
+      transform: scale(1.1) translateY(-2px);
+      opacity: 1;
+    }
+
+    /* DOSTUPNOST / SKLAD (Nové) */
+    .item-stock {
+      margin-top: 0.8rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .stock-in {
+      color: var(--moldavite);
+      /* zelená */
+    }
+
+    .stock-out {
+      color: var(--garnet);
+      /* červená */
+    }
+
+    /* KATALOG NAČÍTANÝ Z TABULKY */
+    .catalog-status {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      padding: 3rem 0;
+    }
+
+    .catalog-image-box {
+      overflow: hidden;
+    }
+
+    .catalog-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .catalog-item .item-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 0.4rem;
+    }
+
+    .catalog-item .item-weight {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .item-size {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      margin: 0.6rem 0 0.3rem;
+    }
+
+    .item-size label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .item-size select {
+      width: 100%;
+      max-width: 240px;
+      background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%237A5C48' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;
+      border: 1px solid var(--cream-dark);
+      border-bottom: 2px solid var(--cream-dark);
+      padding: 8px 34px 8px 12px;
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: border-color 0.3s;
+    }
+
+    .item-size select:focus-visible {
+      border-bottom-color: var(--garnet);
+      outline: 2px solid rgba(139, 26, 46, 0.25);
+      outline-offset: 2px;
+    }
+
+    .item-size select.needs-size {
+      border-color: var(--garnet);
+    }
+
+    .item-size .size-hint {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .item-price-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.25;
+    }
+
+    .catalog-item .item-price-eur {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    button.cart-icon {
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    button.cart-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    button.cart-icon:focus-visible {
+      outline: 2px solid var(--garnet);
+      outline-offset: 3px;
+    }
+
+    .modal-item {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      color: var(--garnet-dark);
+      margin-bottom: 0.6rem;
+    }
+
+    .catalog-toggle-wrap {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    /* KARTY KATEGORIÍ */
+    .catalog-tabs {
+      position: sticky;
+      top: 64px;
+      z-index: 50;
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      background: rgba(250, 247, 242, 0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--cream-dark);
+      margin: 0 -2rem;
+      padding: 0 2rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .catalog-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .catalog-tab {
+      flex: 0 0 auto;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: 1.1rem 1.2rem 0.95rem;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.25s, border-color 0.25s;
+    }
+
+
+    .catalog-tab:hover {
+      color: var(--garnet);
+    }
+
+    .catalog-tab[aria-selected="true"] {
+      color: var(--garnet-dark);
+      border-bottom-color: var(--garnet);
+    }
+
+    .catalog-tab:focus-visible {
+      outline: 2px solid rgba(139, 26, 46, 0.35);
+      outline-offset: -4px;
+    }
+
+    .catalog-panel {
+      padding-top: 2.5rem;
+      scroll-margin-top: 130px;
+    }
+
+    .catalog-panel[hidden] {
+      display: none;
+    }
+
+    .catalog-panel.prave-otevreno {
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .catalog-panel.prave-otevreno {
+        animation: none;
+      }
+    }
+
+    /* KONTAKT */
+    .contact {
+      background: var(--section-alt);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      letter-spacing: 3px;
+      color: var(--garnet-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-info .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .contact-detail:last-child {
+      border-bottom: none;
+    }
+
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--garnet);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+      font-size: 15px;
+    }
+
+    .contact-detail-text strong {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .contact-detail-text span {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: white;
+      border: 1px solid var(--cream-dark);
+      border-bottom: 2px solid var(--cream-dark);
+      padding: 11px 14px;
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-bottom-color: var(--garnet);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .phone-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-wrapper select {
+      flex: 0 0 110px;
+    }
+
+    .phone-wrapper input {
+      flex: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--cream);
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--cream-dark);
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      letter-spacing: 4px;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .footer-logo span {
+      color: var(--garnet);
+    }
+
+    .footer-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-divider {
+      width: 50px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.2rem auto;
+      opacity: 0.4;
+    }
+
+    .footer-copy {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    /* VYSKAKOVACÍ OKNO PRO KOŠÍK (MODAL) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(44, 26, 20, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-box {
+      background: var(--cream);
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--cream-dark);
+      border-top: 4px solid var(--garnet);
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .modal-box p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .modal-input {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--cream-dark);
+      border-bottom: 2px solid var(--cream-dark);
+      padding: 11px 14px;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-input:focus {
+      border-bottom-color: var(--garnet);
+    }
+
+    .modal-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .modal-buttons .btn {
+      width: 100%;
+      padding: 12px 20px;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* PŘEPÍNAČ JAZYKŮ */
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding-left: 1.2rem;
+      border-left: 1px solid var(--cream-dark);
+    }
+
+    .lang-switch button {
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      padding: 6px 5px 4px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .lang-switch button:hover {
+      color: var(--garnet);
+    }
+
+    .lang-switch button.active {
+      color: var(--garnet-dark);
+      border-bottom-color: var(--garnet);
+      font-weight: 600;
+    }
+
+    .lang-switch button:focus-visible {
+      outline: 2px solid rgba(139, 26, 46, 0.35);
+      outline-offset: 2px;
+    }
+
+    .doc-note {
+      font-style: italic;
+      color: var(--text-muted);
+      border-left: 3px solid var(--gold);
+      padding-left: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    /* MOBILNÍ MENU */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-toggle span,
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      position: absolute;
+      left: 11px;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
+      transition: transform 0.25s ease, background 0.25s ease;
+      content: '';
+    }
+
+    .nav-toggle span { top: 21px; }
+    .nav-toggle span::before { left: 0; top: -7px; }
+    .nav-toggle span::after { left: 0; top: 7px; }
+
+    nav.menu-open .nav-toggle span { background: transparent; }
+    nav.menu-open .nav-toggle span::before { transform: translateY(7px) rotate(45deg); }
+    nav.menu-open .nav-toggle span::after { transform: translateY(-7px) rotate(-45deg); }
+
+    /* KONTAKTNÍ FORMULÁŘ – doplňky */
+    .hp-field {
+      position: absolute !important;
+      left: -10000px !important;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .form-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 0.9rem;
+    }
+
+    .form-note a,
+    .footer-legal a,
+    .doc-body a,
+    .cookie-bar a {
+      color: var(--garnet);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .optional {
+      text-transform: none;
+      letter-spacing: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 12px;
+    }
+
+    /* PATIČKA – právní údaje */
+    .footer-legal {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 1.2rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem 1.6rem;
+      list-style: none;
+      margin-bottom: 1.4rem;
+    }
+
+    .footer-links a,
+    .footer-links button {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover,
+    .footer-links button:hover {
+      color: var(--garnet);
+    }
+
+    .contact-detail-text a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .contact-detail-text a:hover {
+      color: var(--garnet);
+    }
+
+    .footer-withdraw {
+      margin-bottom: 1.6rem;
+    }
+
+    .footer-withdraw .btn {
+      padding: 10px 22px;
+    }
+
+    .catalog-vyrobce {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      margin-top: 3rem;
+    }
+
+    .catalog-item .item-maker {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    /* OKNO S DOKUMENTEM (obchodní podmínky apod.) */
+    .doc-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      background: rgba(44, 26, 20, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .doc-overlay[hidden] {
+      display: none;
+    }
+
+    .doc-box {
+      background: var(--cream);
+      border-top: 4px solid var(--garnet);
+      width: 100%;
+      max-width: 820px;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .doc-head {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.6rem;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .doc-head .btn {
+      padding: 8px 16px;
+    }
+
+    .doc-close {
+      background: none;
+      border: 1px solid var(--cream-dark);
+      width: 38px;
+      height: 38px;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .doc-close:hover,
+    .doc-close:focus-visible {
+      color: var(--garnet);
+      border-color: var(--garnet);
+    }
+
+    .doc-body:focus {
+      outline: none;
+    }
+
+    .doc-body {
+      overflow-y: auto;
+      padding: 2rem 2.6rem 2.6rem;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .doc-body h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      color: var(--garnet-dark);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .doc-body h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      color: var(--garnet-dark);
+      margin: 2rem 0 0.7rem;
+    }
+
+    .doc-body h3 {
+      font-size: 1.05rem;
+      margin: 1.4rem 0 0.5rem;
+    }
+
+    .doc-body p,
+    .doc-body ul,
+    .doc-body ol,
+    .doc-body blockquote {
+      margin-bottom: 0.8rem;
+      max-width: 72ch;
+    }
+
+    .doc-body ul,
+    .doc-body ol {
+      padding-left: 1.4rem;
+    }
+
+    .doc-body li {
+      margin-bottom: 0.3rem;
+    }
+
+    .doc-body hr {
+      border: none;
+      border-top: 1px solid var(--cream-dark);
+      margin: 1.6rem 0;
+    }
+
+    .doc-body .table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    .doc-body table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.95rem;
+      background: white;
+    }
+
+    .doc-body th,
+    .doc-body td {
+      border: 1px solid var(--cream-dark);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .doc-body th {
+      background: var(--cream-mid);
+      font-weight: 600;
+    }
+
+    mark.doplnit {
+      background: #FFE58A;
+      color: #5C3B00;
+      padding: 0 3px;
+    }
+
+    .doc-status {
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* FORMULÁŘ PRO ODSTOUPENÍ */
+    .withdraw-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 560px;
+    }
+
+    .withdraw-summary {
+      background: white;
+      border: 1px solid var(--cream-dark);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .withdraw-summary dt {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+    }
+
+    .withdraw-summary dt:first-child {
+      margin-top: 0;
+    }
+
+    .withdraw-summary dd {
+      white-space: pre-wrap;
+    }
+
+    .withdraw-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .captcha-box {
+      margin-top: 1.2rem;
+      min-height: 78px;
+    }
+
+    .captcha-box:empty {
+      min-height: 0;
+    }
+
+    .form-error:empty {
+      display: none;
+    }
+
+    .form-error {
+      color: var(--garnet);
+      font-weight: 600;
+    }
+
+    /* COOKIE LIŠTA */
+    .cookie-bar {
+      position: fixed;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 1050;
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      border-top: 3px solid var(--garnet);
+      box-shadow: 0 12px 40px rgba(44, 26, 20, 0.2);
+      padding: 1.3rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 1.5rem;
+    }
+
+    .cookie-bar[hidden] {
+      display: none;
+    }
+
+    .cookie-bar p {
+      flex: 1 1 320px;
+      font-family: 'EB Garamond', serif;
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .cookie-bar .cookie-buttons {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .cookie-bar .btn {
+      padding: 11px 20px;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    /* TISK DOKUMENTU */
+    @media print {
+      body.tisk-dokumentu > *:not(.doc-overlay) {
+        display: none !important;
+      }
+
+      body.tisk-dokumentu .doc-overlay {
+        position: static;
+        background: none;
+        backdrop-filter: none;
+        padding: 0;
+        display: block;
+      }
+
+      body.tisk-dokumentu .doc-box {
+        box-shadow: none;
+        border: none;
+        max-height: none;
+        animation: none;
+      }
+
+      body.tisk-dokumentu .doc-head {
+        display: none;
+      }
+
+      body.tisk-dokumentu .doc-body {
+        overflow: visible;
+        padding: 0;
+      }
+
+      .doc-body mark.doplnit {
+        background: none;
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:768px) {
+      nav {
+        padding: 0 1rem 0 1.5rem;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--cream);
+        border-bottom: 1px solid var(--cream-dark);
+        box-shadow: 0 12px 30px rgba(44, 26, 20, 0.12);
+        padding: 0.6rem 0 1rem;
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
+      }
+
+      nav.menu-open .nav-links {
+        display: flex;
+      }
+
+      .nav-links > li > a {
+        display: block;
+        padding: 0.85rem 1.5rem;
+        font-size: 12px;
+      }
+
+      .nav-dropdown > a::after {
+        display: none;
+      }
+
+      .nav-submenu,
+      .nav-dropdown:hover .nav-submenu,
+      .nav-dropdown:focus-within .nav-submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        margin: 0;
+        padding: 0 0 0.4rem;
+        border: none;
+        box-shadow: none;
+        background: none;
+        min-width: 0;
+      }
+
+      .nav-submenu::before {
+        display: none;
+      }
+
+      .nav-submenu a {
+        padding: 0.55rem 1.5rem 0.55rem 2.6rem;
+      }
+
+      .lang-switch {
+        border-left: none;
+        border-top: 1px solid var(--cream-dark);
+        margin: 0.6rem 1.5rem 0;
+        padding: 0.8rem 0 0;
+        gap: 0.6rem;
+      }
+
+      .lang-switch button {
+        font-size: 12px;
+        padding: 8px 6px 6px;
+      }
+
+      .doc-overlay {
+        padding: 0;
+      }
+
+      .doc-body {
+        padding: 1.5rem 1.3rem 2rem;
+      }
+
+      .cookie-bar .btn {
+        flex: 1 1 auto;
+      }
+
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .catalog-grid,
+      .catalog-hidden-items {
+        grid-template-columns: 1fr;
+      }
+
+      .catalog-tabs {
+        justify-content: flex-start;
+      }
+
+      .catalog-tab {
+        padding: 1rem 0.9rem 0.85rem;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+      }
+
+      .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+      }
+
+      .process-steps::before {
+        display: none;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero::after {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <img src="logo.png" alt="Logo Brusičství Janků" class="logo">
-        
-        <h1>Brusičství Janků</h1>
-        <p class="status">Na stránkách momentálně pracujeme.</p>
-        
-        <div class="contact">
-            <p>✉️ <a href="mailto:jiri@jankustones.com">jiri@jankustones.com</a></p>
-            <p>📞 <a href="tel:+420727993899">727 99 38 99</a></p>
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="logo.png" alt="Logo" class="nav-logo-image">
+      <span class="nav-logo-text"><strong>BRUSIČSTVÍ</strong>&nbsp;JANKŮ</span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Otevřít menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span>
+    </button>
+
+    <ul class="nav-links" id="nav-links">
+      <li class="nav-dropdown">
+        <a href="#produkty" aria-haspopup="true" data-i18n="nav.produkty">Produkty</a>
+        <ul class="nav-submenu" id="nav-submenu"></ul>
+      </li>
+      <li><a href="#o-nas" data-i18n="nav.onas">O nás</a></li>
+      <li><a href="#kontakt" data-i18n="nav.kontakt">Kontakt</a></li>
+      <li class="lang-switch" role="group" data-i18n-aria="nav.jazyk" aria-label="Jazyk">
+        <button type="button" data-lang="cs" lang="cs" title="Čeština">CS</button>
+        <button type="button" data-lang="en" lang="en" title="English">EN</button>
+        <button type="button" data-lang="de" lang="de" title="Deutsch">DE</button>
+        <button type="button" data-lang="sk" lang="sk" title="Slovenčina">SK</button>
+        <button type="button" data-lang="pl" lang="pl" title="Polski">PL</button>
+      </li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="uvod">
+    <div class="hero-content">
+      <div class="hero-badge" data-i18n="hero.badge">Ruční brusičství drahých kamenů</div>
+      <div class="hero-logo-gems">
+        <img src="logo.png" alt="Logo Brusičství Janků" data-i18n-alt="hero.logoAlt" style="max-height: 150px; width: auto;">
+      </div>
+      <h1>Brusičství Janků<em data-i18n="hero.podtitul">Jiří Janků · brusič drahých kamenů</em></h1>
+      <div class="hero-divider"></div>
+      <p data-i18n="hero.text">České granáty, vltavíny a drahokamy broušené s láskou a řemeslnou pečlivostí. Každý kámen je jedinečný příběh.</p>
+      <div class="hero-cta">
+        <a href="#produkty" class="btn btn-primary" data-i18n="hero.btnSperky">Naše šperky</a>
+        <a href="#kontakt" class="btn btn-secondary" data-i18n="hero.btnKontakt">Kontaktovat</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="o-nas">
+    <div class="section-inner">
+      <p class="section-label" data-i18n="onas.label">O nás</p>
+      <h2 class="section-title" data-i18n="onas.title">Tradice a vášeň pro kameny</h2>
+      <p class="section-subtitle" data-i18n="onas.subtitle">Každý drahý kámen skrývá příběh. Naším posláním je jej odhalit.</p>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <p data-i18n="onas.p1"></p>
+          <p data-i18n="onas.p2"></p>
+          <p data-i18n="onas.p3"></p>
+          <a href="#kontakt" class="btn btn-primary" style="margin-top:1.2rem" data-i18n="onas.btn">Zeptat se na zakázku</a>
         </div>
+        <div class="about-stones">
+          <div class="stone-card">
+            <div class="stone-icon">🔴</div>
+            <h3 data-i18n="kamen.granat">Český granát</h3>
+            <p data-i18n="kamen.granatText">Pyrop, národní drahokam</p>
+          </div>
+          <div class="stone-card">
+            <div class="stone-icon">💚</div>
+            <h3 data-i18n="kamen.vltavin">Vltavín</h3>
+            <p data-i18n="kamen.vltavinText">Unikátní přírodní sklo</p>
+          </div>
+          <div class="stone-card">
+            <div class="stone-icon">💎</div>
+            <h3 data-i18n="kamen.drahokamy">Drahokamy</h3>
+            <p data-i18n="kamen.drahokamyText">Rubíny, safíry, smaragdy</p>
+          </div>
+          <div class="stone-card">
+            <div class="stone-icon">✨</div>
+            <h3 data-i18n="kamen.synt">Syntetické kameny</h3>
+            <p data-i18n="kamen.syntText">Kvalitní laboratorní kameny</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <div class="section-inner">
+      <p class="section-label" data-i18n="proces.label">Jak to funguje</p>
+      <h2 class="section-title" data-i18n="proces.title">Od surového kamene k šperku</h2>
+      <p class="section-subtitle" data-i18n="proces.subtitle">Každý šperk prochází pečlivým procesem, který zaručuje výjimečný výsledek.</p>
+      <div class="process-steps reveal">
+        <div class="process-step">
+          <div class="step-num">I</div>
+          <h3 data-i18n="proces.k1">Výběr kamene</h3>
+          <p data-i18n="proces.t1">Každý surový kámen je pečlivě vybrán a posouzen z hlediska kvality a potenciálu.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">II</div>
+          <h3 data-i18n="proces.k2">Broušení</h3>
+          <p data-i18n="proces.t2">Ruční broušení odhaluje vnitřní krásu kamene. Přesnost a trpělivost jsou klíčové.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">III</div>
+          <h3 data-i18n="proces.k3">Zasazení</h3>
+          <p data-i18n="proces.t3">Broušený kámen je zasazen do šperku tak, aby vynikl a byl bezpečně upevněn.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">IV</div>
+          <h3 data-i18n="proces.k4">Předání</h3>
+          <p data-i18n="proces.t4">Hotový šperk je důkladně zkontrolován a předán zákazníkovi s péčí.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KATALOG PRODUKTŮ -->
+  <section class="catalog" id="produkty">
+    <div class="section-inner">
+      <p class="section-label" data-i18n="katalog.label">Katalog</p>
+      <h2 class="section-title" data-i18n="katalog.title">Naše tvorba</h2>
+      <p class="section-subtitle" data-i18n="katalog.subtitle"></p>
+
+      <!-- Položky se načítají automaticky z tabulky seznam.xlsx (každý list = jedna kategorie) -->
+      <div id="katalog-obsah">
+        <p class="catalog-status" data-i18n="katalog.nacitam">Načítám nabídku…</p>
+      </div>
+      <p class="catalog-vyrobce" data-i18n-html="katalog.vyrobce"></p>
+
+    </div>
+  </section>
+
+  <section class="contact" id="kontakt">
+    <div class="section-inner">
+      <p class="section-label" data-i18n="kontakt.label">Kontakt</p>
+      <h2 class="section-title" data-i18n="kontakt.title">Spojte se s námi</h2>
+      <p class="section-subtitle" data-i18n="kontakt.subtitle">Máte zájem o šperk nebo zakázku? Rádi vám poradíme.</p>
+      <div class="contact-grid reveal">
+        <div class="contact-info">
+          <h2>Brusičství Janků</h2>
+          <p class="subtitle" data-i18n="kontakt.podtitul">Jiří Janků, brusič drahých kamenů</p>
+          <div class="contact-detail">
+            <div class="contact-icon">📞</div>
+            <div class="contact-detail-text"><strong data-i18n="kontakt.telefon">Telefon</strong><span>+420 727 993 899</span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">✉</div>
+            <div class="contact-detail-text"><strong data-i18n="kontakt.email">E-mail</strong><span>jiri@jankustones.com</span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">🌐</div>
+            <div class="contact-detail-text"><strong data-i18n="kontakt.web">Web</strong><span>www.jankustones.cz</span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">📷</div>
+            <div class="contact-detail-text"><strong>Instagram</strong><span><a href="https://www.instagram.com/jankustones/" target="_blank" rel="noopener">@jankustones</a></span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">⌂</div>
+            <div class="contact-detail-text"><strong data-i18n="kontakt.provozovatel">Provozovatel</strong><span data-i18n-html="kontakt.provozovatelUdaje"></span></div>
+          </div>
+        </div>
+
+        <form action="https://api.web3forms.com/submit" method="POST" id="poptavkovy-formular">
+          <input type="hidden" name="access_key" value="661b1021-5424-4d0a-a9a1-80462faaf423">
+          <input type="hidden" name="subject" value="Nová poptávka z webu - Brusičství Janků">
+          <input type="hidden" name="Jazyk" id="form-jazyk" value="Čeština">
+          <!-- Ochrana proti spamu (honeypot): skryté pole, které vyplní jen roboti -->
+          <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-jmeno" data-i18n="form.jmeno">Jméno</label>
+              <input type="text" id="f-jmeno" name="Jmeno" placeholder="Vaše jméno" data-i18n-placeholder="form.jmenoPh" autocomplete="name" required>
+            </div>
+            <div class="form-group">
+              <label for="f-email" data-i18n="form.email">E-mail</label>
+              <input type="email" id="f-email" name="Email" placeholder="vas@email.cz" data-i18n-placeholder="form.emailPh" autocomplete="email" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="f-tel" data-i18n-html="form.telefon">Telefonní číslo <span class="optional">(nepovinné)</span></label>
+            <div class="phone-wrapper">
+              <select class="phone-prefix" name="Predvolba" title="Předvolba" data-i18n-title="form.predvolba" data-i18n-aria="form.predvolba">
+                <option value="+420">+420 (CZ)</option>
+                <option value="+421">+421 (SK)</option>
+                <option value="+48">+48 (PL)</option>
+                <option value="+49">+49 (DE)</option>
+                <option value="+43">+43 (AT)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="Jiné" data-i18n="form.jine">Jiné (napište do zprávy)</option>
+              </select>
+              <input type="tel" id="f-tel" name="Telefon" placeholder="123 456 789" autocomplete="tel-national">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="kategorie-select" data-i18n-html="form.zajem">Zájem o <span class="optional">(nepovinné)</span></label>
+            <select name="Kategorie" id="kategorie-select">
+              <option value="Nevybráno">Vyberte kategorii...</option>
+              <option value="Náušnice">Náušnice</option>
+              <option value="Prsteny">Prsteny</option>
+              <option value="Náhrdelníky">Náhrdelníky</option>
+              <option value="Náramky">Náramky</option>
+              <option value="Zakázková výroba">Zakázková výroba</option>
+              <option value="Broušení kamene">Broušení kamene</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="zprava-textarea" data-i18n="form.zprava">Zpráva</label>
+            <textarea name="Zprava" id="zprava-textarea"
+              placeholder="Popište, co hledáte, nebo se zeptejte na cokoliv…" data-i18n-placeholder="form.zpravaPh" required></textarea>
+          </div>
+
+          <div class="captcha-box" id="captcha-poptavka"></div>
+          <p class="form-error" id="captcha-chyba" role="alert"></p>
+
+          <div style="margin-top: 20px;">
+            <button class="btn btn-primary" type="submit" data-i18n="form.odeslat">Odeslat zprávu</button>
+            <p class="form-note" data-i18n-html="form.dolozka"></p>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo"><span>BRUSIČSTVÍ</span> JANKŮ</div>
+    <div class="footer-sub" data-i18n="paticka.podtitul">Jiří Janků · brusič drahých kamenů · +420 727 993 899 · jiri@jankustones.com</div>
+    <div class="footer-divider"></div>
+    <p class="footer-legal" data-i18n-html="paticka.pravni"></p>
+    <ul class="footer-links">
+      <li><a href="https://www.instagram.com/jankustones/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="#dokument-obchodni-podminky" data-i18n="paticka.op">Obchodní podmínky</a></li>
+      <li><a href="#dokument-reklamacni-rad" data-i18n="paticka.rr">Reklamační řád</a></li>
+      <li><a href="#dokument-odstoupeni-od-smlouvy" data-i18n="paticka.vraceni">Vrácení zboží</a></li>
+      <li><a href="#dokument-ochrana-osobnich-udaju" data-i18n="paticka.gdpr">Ochrana osobních údajů</a></li>
+      <li><a href="#dokument-cookies" data-i18n="paticka.cookies">Cookies</a></li>
+      <li id="cookie-nastaveni-polozka" hidden><button type="button" id="cookie-nastaveni" data-i18n="paticka.nastaveniCookies">Nastavení cookies</button></li>
+    </ul>
+    <div class="footer-withdraw">
+      <a href="#odstoupit" class="btn btn-secondary" data-i18n="paticka.odstoupit">Odstoupit od smlouvy</a>
+    </div>
+    <div class="footer-copy">© <span id="rok">2026</span> Brusičství Janků · <span data-i18n="paticka.prava">Všechna práva vyhrazena</span> · jankustones.cz</div>
+  </footer>
+
+  <!-- OKNO PRO DOKUMENTY A FORMULÁŘ ODSTOUPENÍ -->
+  <div class="doc-overlay" id="docOverlay" hidden>
+    <div class="doc-box" role="dialog" aria-modal="true" aria-labelledby="docTitle">
+      <div class="doc-head">
+        <button type="button" class="btn btn-secondary" id="docPrint" data-i18n="dok.tisk">Vytisknout / uložit PDF</button>
+        <button type="button" class="doc-close" id="docClose" aria-label="Zavřít" data-i18n-aria="dok.zavrit" data-i18n-title="dok.zavrit">×</button>
+      </div>
+      <div class="doc-body" id="docBody" tabindex="-1"></div>
+    </div>
+  </div>
+
+  <!-- COOKIE LIŠTA (zobrazí se jen pokud web používá cookies vyžadující souhlas – viz NASTAVENÍ ve skriptu) -->
+  <div class="cookie-bar" id="cookieBar" role="region" aria-label="Souhlas s cookies" data-i18n-aria="cookie.aria" hidden>
+    <p data-i18n-html="cookie.text"></p>
+    <div class="cookie-buttons">
+      <button type="button" class="btn btn-primary" id="cookieAccept" data-i18n="cookie.prijmout">Přijmout vše</button>
+      <button type="button" class="btn btn-primary" id="cookieReject" data-i18n="cookie.odmitnout">Odmítnout vše</button>
+    </div>
+  </div>
+
+  <!-- HTML MODALNÍHO OKNA (Jedno pozadí, dva různé obsahy) -->
+  <div class="modal-overlay" id="customModal">
+
+    <!-- Box 1: Zadání množství -->
+    <div class="modal-box" id="qtyBox" style="display: none;">
+      <div class="modal-item" id="qtyItemLabel"></div>
+      <p data-i18n="mnozstvi.otazka">Zadejte požadované množství:</p>
+      <input type="number" id="qtyInput" class="modal-input" value="1" min="1">
+      <div class="modal-buttons">
+        <button class="btn btn-primary" id="btn-confirm-qty" data-i18n="mnozstvi.potvrdit">Potvrdit</button>
+        <button class="btn btn-secondary" style="border: none; background: transparent; padding-top:0;"
+          onclick="zavritModal()" data-i18n="mnozstvi.zrusit">Zrušit (zavřít okno)</button>
+      </div>
     </div>
 
+    <!-- Box 2: Co dělat, když už zpráva existuje -->
+    <div class="modal-box" id="actionBox" style="display: none;">
+      <p data-i18n="mnozstvi.existuje">V poptávce už máte vyplněný šperk. Co si přejete s tímto novým udělat?</p>
+      <div class="modal-buttons">
+        <button class="btn btn-primary" id="btn-add" data-i18n="mnozstvi.pridat">Přidat k současným (do poznámky)</button>
+        <button class="btn btn-secondary" id="btn-overwrite" data-i18n="mnozstvi.prepsat">Přepsat původní výběr</button>
+        <button class="btn btn-secondary" style="border: none; background: transparent; padding-top:0;"
+          onclick="zavritModal()" data-i18n="mnozstvi.zrusit">Zrušit (zavřít okno)</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Knihovna pro čtení Excelu (SheetJS) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // =====================================================================
+    //  PŘEKLADY WEBU (cs, en, de, sk, pl)
+    //  Texty můžete upravovat přímo zde. Klíč vlevo neměňte.
+    //  {neco} = místo, kam web doplní hodnotu (číslo, e-mail…).
+    // =====================================================================
+    const I18N = {
+      cs: {
+        "meta.title": "Brusičství Janků – Jiří Janků, brusič drahých kamenů",
+        "nav.produkty": "Produkty",
+        "nav.onas": "O nás",
+        "nav.kontakt": "Kontakt",
+        "nav.menuOtevrit": "Otevřít menu",
+        "nav.menuZavrit": "Zavřít menu",
+        "nav.jazyk": "Jazyk",
+        "hero.badge": "Ruční brusičství drahých kamenů",
+        "hero.podtitul": "Jiří Janků · brusič drahých kamenů",
+        "hero.text": "České granáty, vltavíny a drahokamy broušené s láskou a řemeslnou pečlivostí. Každý kámen je jedinečný příběh.",
+        "hero.btnSperky": "Naše šperky",
+        "hero.btnKontakt": "Kontaktovat",
+        "hero.logoAlt": "Logo Brusičství Janků",
+        "onas.label": "O nás",
+        "onas.title": "Tradice a vášeň pro kameny",
+        "onas.subtitle": "Každý drahý kámen skrývá příběh. Naším posláním je jej odhalit.",
+        "onas.p1": "Brusičství Janků se specializuje na ruční broušení českých granátů, vzácných vltavínů a nejrůznějších drahokamů a syntetik. Každý kámen prochází rukama s letitou praxí a citlivým okem pro detail.",
+        "onas.p2": "Z broušených kamenů pak vznikají jedinečné šperky — náušnice, prsteny, náramky, náhrdelníky i kompletní soupravy. Vše je vyrobeno s ohledem na krásu materiálu a trvanlivost zpracování.",
+        "onas.p3": "Pracujeme jak pro soukromé zákazníky, tak na zakázku. Rádi vám poradíme s výběrem kamene nebo zpracujeme váš vlastní materiál.",
+        "onas.btn": "Zeptat se na zakázku",
+        "kamen.granat": "Český granát",
+        "kamen.granatText": "Pyrop, národní drahokam",
+        "kamen.vltavin": "Vltavín",
+        "kamen.vltavinText": "Unikátní přírodní sklo",
+        "kamen.drahokamy": "Drahokamy",
+        "kamen.drahokamyText": "Rubíny, safíry, smaragdy",
+        "kamen.synt": "Syntetické kameny",
+        "kamen.syntText": "Kvalitní laboratorní kameny",
+        "proces.label": "Jak to funguje",
+        "proces.title": "Od surového kamene k šperku",
+        "proces.subtitle": "Každý šperk prochází pečlivým procesem, který zaručuje výjimečný výsledek.",
+        "proces.k1": "Výběr kamene",
+        "proces.t1": "Každý surový kámen je pečlivě vybrán a posouzen z hlediska kvality a potenciálu.",
+        "proces.k2": "Broušení",
+        "proces.t2": "Ruční broušení odhaluje vnitřní krásu kamene. Přesnost a trpělivost jsou klíčové.",
+        "proces.k3": "Zasazení",
+        "proces.t3": "Broušený kámen je zasazen do šperku tak, aby vynikl a byl bezpečně upevněn.",
+        "proces.k4": "Předání",
+        "proces.t4": "Hotový šperk je důkladně zkontrolován a předán zákazníkovi s péčí.",
+        "katalog.label": "Katalog",
+        "katalog.title": "Naše tvorba",
+        "katalog.subtitle": "Prohlédněte si naši aktuální nabídku. Pro více informací nás neváhejte kontaktovat.",
+        "katalog.nacitam": "Načítám nabídku…",
+        "katalog.chyba": "Nabídku se teď nepodařilo načíst. Obnovte prosím stránku, nebo nás kontaktujte.",
+        "katalog.prazdny": "Momentálně nemáme v nabídce žádné šperky. Napište nám, rádi vám šperk vyrobíme na zakázku.",
+        "katalog.vyrobce": "Výrobce šperků, není-li u šperku uvedeno jinak: <span data-pole=\"jmeno\"></span>, <span data-pole=\"adresa\"></span>, <span data-pole=\"email\"></span>. Péče o šperky a bezpečnostní informace najdete v <a href=\"#dokument-obchodni-podminky\">obchodních podmínkách</a>.",
+        "katalog.vice": "Zobrazit více",
+        "katalog.mene": "Zobrazit méně",
+        "katalog.kategorieAria": "Kategorie šperků",
+        "karta.kod": "Kód",
+        "karta.vaha": "Váha",
+        "karta.vyrobce": "Výrobce",
+        "karta.velikost": "Velikost",
+        "karta.vyberte": "Vyberte velikost",
+        "karta.napoveda": "Velikost = obvod prstu v mm",
+        "karta.ihned": "Ihned k odeslání",
+        "karta.zakazka": "Na zakázku",
+        "karta.naDotaz": "Cena na dotaz",
+        "karta.foto": "Fotografie se připravuje",
+        "karta.nejdrive": "Nejprve vyberte velikost",
+        "karta.kosik": "Mám zájem o tento šperk",
+        "mnozstvi.otazka": "Zadejte požadované množství:",
+        "mnozstvi.potvrdit": "Potvrdit",
+        "mnozstvi.zrusit": "Zrušit (zavřít okno)",
+        "mnozstvi.existuje": "V poptávce už máte vyplněný šperk. Co si přejete s tímto novým udělat?",
+        "mnozstvi.pridat": "Přidat k současným (do poznámky)",
+        "mnozstvi.prepsat": "Přepsat původní výběr",
+        "mnozstvi.chyba": "Zadejte prosím platné číslo (množství musí být větší než 0).",
+        "mnozstvi.velikost": "velikost {v}",
+        "poptavka.uvod": "Dobrý den,\nměl/a bych zájem o:",
+        "poptavka.kod": "kód",
+        "poptavka.vel": "vel.",
+        "poptavka.ks": "ks",
+        "poptavka.naDotaz": "cena na dotaz",
+        "poptavka.ihned": "ihned k odeslání",
+        "poptavka.zakazka": "na zakázku",
+        "poptavka.cast": "{a} ks ihned k odeslání, {b} ks na zakázku",
+        "kontakt.label": "Kontakt",
+        "kontakt.title": "Spojte se s námi",
+        "kontakt.subtitle": "Máte zájem o šperk nebo zakázku? Rádi vám poradíme.",
+        "kontakt.podtitul": "Jiří Janků, brusič drahých kamenů",
+        "kontakt.telefon": "Telefon",
+        "kontakt.email": "E-mail",
+        "kontakt.web": "Web",
+        "kontakt.provozovatel": "Provozovatel",
+        "kontakt.provozovatelUdaje": "<span data-pole=\"jmeno\"></span>, IČO <span data-pole=\"ico\"></span><br><span data-pole=\"adresa\"></span>",
+        "form.jmeno": "Jméno",
+        "form.jmenoPh": "Vaše jméno",
+        "form.email": "E-mail",
+        "form.emailPh": "vas@email.cz",
+        "form.telefon": "Telefonní číslo <span class=\"optional\">(nepovinné)</span>",
+        "form.predvolba": "Předvolba",
+        "form.jine": "Jiné (napište do zprávy)",
+        "form.zajem": "Zájem o <span class=\"optional\">(nepovinné)</span>",
+        "form.vyberte": "Vyberte kategorii…",
+        "form.zprava": "Zpráva",
+        "form.zpravaPh": "Popište, co hledáte, nebo se zeptejte na cokoliv…",
+        "form.odeslat": "Odeslat zprávu",
+        "form.dolozka": "Odeslání poptávky je nezávazné. Odesláním zprávy beru na vědomí zpracování svých osobních údajů za účelem vyřízení dotazu. Více v <a href=\"#dokument-ochrana-osobnich-udaju\">Zásadách zpracování osobních údajů</a>.",
+        "captcha.chyba": "Potvrďte prosím, že nejste robot.",
+        "captcha.nelze": "Ověření „nejsem robot“ se nepodařilo načíst. Zkuste obnovit stránku, nebo nám napište přímo na {email}.",
+        "sluzba.zakazkova": "Zakázková výroba",
+        "sluzba.brouseni": "Broušení kamene",
+        "paticka.podtitul": "Jiří Janků · brusič drahých kamenů · +420 727 993 899 · jiri@jankustones.com",
+        "paticka.pravni": "Provozovatel: <span data-pole=\"jmeno\"></span>, místo podnikání <span data-pole=\"adresa\"></span>, IČO <span data-pole=\"ico\"></span>, <span data-pole=\"dic\"></span>. <span data-pole=\"rejstrik\"></span>. Kontakt: <a data-pole=\"email\"></a>, <a data-pole=\"telefon\"></a>.",
+        "paticka.op": "Obchodní podmínky",
+        "paticka.rr": "Reklamační řád",
+        "paticka.vraceni": "Vrácení zboží",
+        "paticka.gdpr": "Ochrana osobních údajů",
+        "paticka.cookies": "Cookies",
+        "paticka.nastaveniCookies": "Nastavení cookies",
+        "paticka.odstoupit": "Odstoupit od smlouvy",
+        "paticka.prava": "Všechna práva vyhrazena",
+        "cookie.text": "Rádi bychom měřili návštěvnost webu pomocí analytických cookies, abychom jej mohli zlepšovat. Spustíme je jen s vaším souhlasem. <a href=\"#dokument-cookies\">Více o cookies</a>",
+        "cookie.prijmout": "Přijmout vše",
+        "cookie.odmitnout": "Odmítnout vše",
+        "cookie.aria": "Souhlas s cookies",
+        "dok.tisk": "Vytisknout / uložit PDF",
+        "dok.zavrit": "Zavřít",
+        "dok.nacitam": "Načítám…",
+        "dok.chyba": "Dokument se nepodařilo načíst. Obnovte prosím stránku, nebo nám napište na {email} a pošleme vám jej.",
+        "dok.poznamka": "",
+        "pole.rejstrik": "",
+        "pole.ico": "IČO",
+        "pole.dic": "DIČ",
+        "pole.neplatce": "neplátce DPH",
+        "odst.nadpis": "Odstoupit od smlouvy",
+        "odst.uvod": "Vyplňte prosím údaje, podle kterých objednávku najdeme. V dalším kroku odstoupení potvrdíte. Pravidla vrácení zboží najdete v <a href=\"#dokument-odstoupeni-od-smlouvy\">poučení o odstoupení</a>.",
+        "odst.jmeno": "Jméno a příjmení",
+        "odst.email": "E-mail (pošleme na něj potvrzení)",
+        "odst.zbozi": "Které zboží vracíte (kód šperku nebo číslo objednávky)",
+        "odst.datum": "Datum objednání nebo převzetí",
+        "odst.datumPh": "např. 12. 10. 2026",
+        "odst.ucet": "Číslo účtu pro vrácení peněz",
+        "odst.nepovinne": "(nepovinné)",
+        "odst.pokracovat": "Pokračovat",
+        "odst.chyba": "Vyplňte prosím jméno, platný e-mail a zboží, které vracíte.",
+        "odst.nadpis2": "Potvrzení odstoupení",
+        "odst.text2": "Zkontrolujte prosím údaje. Stisknutím tlačítka níže odstoupíte od smlouvy o nákupu uvedeného zboží.",
+        "odst.potvrdit": "Potvrdit odstoupení",
+        "odst.upravit": "Upravit údaje",
+        "odst.odesilam": "Odesílám…",
+        "odst.nadpis3": "Odstoupení jsme přijali",
+        "odst.text3": "Děkujeme. Vaše odstoupení od smlouvy jsme přijali {datum}. Potvrzení s jeho obsahem vám bez zbytečného odkladu pošleme na e-mail {email}.",
+        "odst.vratit": "Šperk nám prosím zašlete do 14 dnů na adresu {adresa}. Peníze vám vrátíme do 14 dnů od odstoupení, nejdříve však po obdržení zboží nebo doložení jeho odeslání.",
+        "odst.chybaOdeslani": "Odstoupení se nepodařilo odeslat. Zkuste to prosím znovu, nebo jej pošlete e-mailem na {email}.",
+        "odst.sJmeno": "Jméno",
+        "odst.sEmail": "E-mail",
+        "odst.sZbozi": "Zboží",
+        "odst.sDatum": "Datum objednání / převzetí",
+        "odst.sUcet": "Číslo účtu",
+        "odst.sPrijato": "Odstoupení přijato",
+        "odst.casSpojka": "v"
+      },
+
+      en: {
+        "meta.title": "Brusičství Janků – Jiří Janků, gemstone cutter",
+        "nav.produkty": "Products",
+        "nav.onas": "About us",
+        "nav.kontakt": "Contact",
+        "nav.menuOtevrit": "Open menu",
+        "nav.menuZavrit": "Close menu",
+        "nav.jazyk": "Language",
+        "hero.badge": "Handcrafted gemstone cutting",
+        "hero.podtitul": "Jiří Janků · gemstone cutter",
+        "hero.text": "Bohemian garnets, moldavites and gemstones, cut with love and true craftsmanship. Every stone tells its own story.",
+        "hero.btnSperky": "Our jewelry",
+        "hero.btnKontakt": "Contact us",
+        "hero.logoAlt": "Brusičství Janků logo",
+        "onas.label": "About us",
+        "onas.title": "Tradition and a passion for stones",
+        "onas.subtitle": "Every gemstone holds a story. Our mission is to reveal it.",
+        "onas.p1": "Brusičství Janků specializes in hand-cutting Bohemian garnets, rare moldavites and a wide range of gemstones and synthetic stones. Every stone passes through experienced hands guided by a keen eye for detail.",
+        "onas.p2": "The cut stones are then made into unique jewelry — earrings, rings, bracelets, necklaces and complete sets. Every piece is crafted with respect for the beauty of the material and the durability of the workmanship.",
+        "onas.p3": "We work for private customers and also take custom orders. We will gladly help you choose a stone or work with your own material.",
+        "onas.btn": "Ask about a custom order",
+        "kamen.granat": "Bohemian garnet",
+        "kamen.granatText": "Pyrope, the Czech national gemstone",
+        "kamen.vltavin": "Moldavite",
+        "kamen.vltavinText": "A unique natural glass",
+        "kamen.drahokamy": "Gemstones",
+        "kamen.drahokamyText": "Rubies, sapphires, emeralds",
+        "kamen.synt": "Synthetic stones",
+        "kamen.syntText": "High-quality lab-grown stones",
+        "proces.label": "How it works",
+        "proces.title": "From rough stone to jewelry",
+        "proces.subtitle": "Every piece goes through a careful process that guarantees an exceptional result.",
+        "proces.k1": "Selecting the stone",
+        "proces.t1": "Every rough stone is carefully selected and assessed for its quality and potential.",
+        "proces.k2": "Cutting",
+        "proces.t2": "Hand-cutting reveals the inner beauty of the stone. Precision and patience are essential.",
+        "proces.k3": "Setting",
+        "proces.t3": "The cut stone is set into the jewelry so that it stands out and is held securely.",
+        "proces.k4": "Handover",
+        "proces.t4": "The finished piece is thoroughly inspected and carefully handed over to the customer.",
+        "katalog.label": "Catalog",
+        "katalog.title": "Our creations",
+        "katalog.subtitle": "Browse our current collection. If you would like more information, do not hesitate to contact us.",
+        "katalog.nacitam": "Loading the collection…",
+        "katalog.chyba": "The collection could not be loaded right now. Please refresh the page or contact us.",
+        "katalog.prazdny": "We currently have no jewelry on offer. Write to us and we will be happy to make a piece to order.",
+        "katalog.vyrobce": "Manufacturer of the jewelry, unless stated otherwise: <span data-pole=\"jmeno\"></span>, <span data-pole=\"adresa\"></span>, <span data-pole=\"email\"></span>. Jewelry care and safety information can be found in the <a href=\"#dokument-obchodni-podminky\">Terms and Conditions</a>.",
+        "katalog.vice": "Show more",
+        "katalog.mene": "Show less",
+        "katalog.kategorieAria": "Jewelry categories",
+        "karta.kod": "Code",
+        "karta.vaha": "Weight",
+        "karta.vyrobce": "Manufacturer",
+        "karta.velikost": "Size",
+        "karta.vyberte": "Select size",
+        "karta.napoveda": "Size = finger circumference in mm",
+        "karta.ihned": "Ready to ship",
+        "karta.zakazka": "Made to order",
+        "karta.naDotaz": "Price on request",
+        "karta.foto": "Photo coming soon",
+        "karta.nejdrive": "Please select a size first",
+        "karta.kosik": "I am interested in this piece",
+        "mnozstvi.otazka": "Enter the quantity:",
+        "mnozstvi.potvrdit": "Confirm",
+        "mnozstvi.zrusit": "Cancel",
+        "mnozstvi.existuje": "Your inquiry already contains a piece of jewelry. What would you like to do with this one?",
+        "mnozstvi.pridat": "Add to the current selection",
+        "mnozstvi.prepsat": "Replace the previous selection",
+        "mnozstvi.chyba": "Please enter a valid number (the quantity must be greater than 0).",
+        "mnozstvi.velikost": "size {v}",
+        "poptavka.uvod": "Hello,\nI am interested in:",
+        "poptavka.kod": "code",
+        "poptavka.vel": "size",
+        "poptavka.ks": "pc",
+        "poptavka.naDotaz": "price on request",
+        "poptavka.ihned": "ready to ship",
+        "poptavka.zakazka": "made to order",
+        "poptavka.cast": "{a} pc ready to ship, {b} pc made to order",
+        "kontakt.label": "Contact",
+        "kontakt.title": "Get in touch",
+        "kontakt.subtitle": "Interested in a piece of jewelry or a custom order? We are happy to help.",
+        "kontakt.podtitul": "Jiří Janků, gemstone cutter",
+        "kontakt.telefon": "Phone",
+        "kontakt.email": "Email",
+        "kontakt.web": "Website",
+        "kontakt.provozovatel": "Operator",
+        "kontakt.provozovatelUdaje": "<span data-pole=\"jmeno\"></span>, Business ID (IČO) <span data-pole=\"ico\"></span><br><span data-pole=\"adresa\"></span>",
+        "form.jmeno": "Name",
+        "form.jmenoPh": "Your name",
+        "form.email": "Email",
+        "form.emailPh": "you@example.com",
+        "form.telefon": "Phone number <span class=\"optional\">(optional)</span>",
+        "form.predvolba": "Country code",
+        "form.jine": "Other (write it in the message)",
+        "form.zajem": "Interested in <span class=\"optional\">(optional)</span>",
+        "form.vyberte": "Select a category…",
+        "form.zprava": "Message",
+        "form.zpravaPh": "Describe what you are looking for or ask us anything…",
+        "form.odeslat": "Send message",
+        "form.dolozka": "Sending an inquiry is non-binding. By sending this message, I acknowledge that my personal data will be processed in order to handle my inquiry. More information in the <a href=\"#dokument-ochrana-osobnich-udaju\">Privacy Policy</a>.",
+        "captcha.chyba": "Please confirm that you are not a robot.",
+        "captcha.nelze": "The “I am human” check could not be loaded. Please refresh the page or email us directly at {email}.",
+        "sluzba.zakazkova": "Custom-made jewelry",
+        "sluzba.brouseni": "Stone cutting",
+        "paticka.podtitul": "Jiří Janků · gemstone cutter · +420 727 993 899 · jiri@jankustones.com",
+        "paticka.pravni": "Operator: <span data-pole=\"jmeno\"></span>, place of business <span data-pole=\"adresa\"></span>, Business ID (IČO) <span data-pole=\"ico\"></span>, <span data-pole=\"dic\"></span>. <span data-pole=\"rejstrik\"></span>. Contact: <a data-pole=\"email\"></a>, <a data-pole=\"telefon\"></a>.",
+        "paticka.op": "Terms and Conditions",
+        "paticka.rr": "Complaints Procedure",
+        "paticka.vraceni": "Returns",
+        "paticka.gdpr": "Privacy Policy",
+        "paticka.cookies": "Cookies",
+        "paticka.nastaveniCookies": "Cookie settings",
+        "paticka.odstoupit": "Withdraw from the contract",
+        "paticka.prava": "All rights reserved",
+        "cookie.text": "We would like to measure website traffic using analytics cookies so that we can improve the site. We will only enable them with your consent. <a href=\"#dokument-cookies\">More about cookies</a>",
+        "cookie.prijmout": "Accept all",
+        "cookie.odmitnout": "Reject all",
+        "cookie.aria": "Cookie consent",
+        "dok.tisk": "Print / save as PDF",
+        "dok.zavrit": "Close",
+        "dok.nacitam": "Loading…",
+        "dok.chyba": "The document could not be loaded. Please refresh the page or email us at {email} and we will send it to you.",
+        "dok.poznamka": "",
+        "pole.rejstrik": "Natural person registered in the Czech Trade Register",
+        "pole.ico": "Business ID (IČO)",
+        "pole.dic": "VAT ID",
+        "pole.neplatce": "not a VAT payer",
+        "odst.nadpis": "Withdraw from the contract",
+        "odst.uvod": "Please fill in the details we need to find your order. You will confirm the withdrawal in the next step. The rules for returning goods are explained in the <a href=\"#dokument-odstoupeni-od-smlouvy\">withdrawal information</a>.",
+        "odst.jmeno": "Full name",
+        "odst.email": "Email (we will send the confirmation here)",
+        "odst.zbozi": "Which goods are you returning (item code or order number)",
+        "odst.datum": "Date of order or receipt",
+        "odst.datumPh": "e.g. October 12, 2026",
+        "odst.ucet": "Bank account for the refund",
+        "odst.nepovinne": "(optional)",
+        "odst.pokracovat": "Continue",
+        "odst.chyba": "Please fill in your name, a valid email address and the goods you are returning.",
+        "odst.nadpis2": "Confirm withdrawal",
+        "odst.text2": "Please check the details. By pressing the button below, you withdraw from the contract for the purchase of the goods listed.",
+        "odst.potvrdit": "Confirm withdrawal",
+        "odst.upravit": "Edit details",
+        "odst.odesilam": "Sending…",
+        "odst.nadpis3": "We have received your withdrawal",
+        "odst.text3": "Thank you. We received your withdrawal from the contract on {datum}. We will send a confirmation of its content to {email} without undue delay.",
+        "odst.vratit": "Please send the jewelry back to us within 14 days to the following address: {adresa}. We will refund your money within 14 days of the withdrawal, but not before we receive the goods or you provide proof that they have been sent.",
+        "odst.chybaOdeslani": "Your withdrawal could not be sent. Please try again or send it by email to {email}.",
+        "odst.sJmeno": "Name",
+        "odst.sEmail": "Email",
+        "odst.sZbozi": "Goods",
+        "odst.sDatum": "Date of order / receipt",
+        "odst.sUcet": "Bank account",
+        "odst.sPrijato": "Withdrawal received",
+        "odst.casSpojka": "at"
+      },
+
+      de: {
+        "meta.title": "Brusičství Janků – Jiří Janků, Edelsteinschleifer",
+        "nav.produkty": "Produkte",
+        "nav.onas": "Über uns",
+        "nav.kontakt": "Kontakt",
+        "nav.menuOtevrit": "Menü öffnen",
+        "nav.menuZavrit": "Menü schließen",
+        "nav.jazyk": "Sprache",
+        "hero.badge": "Handwerkliche Edelsteinschleiferei",
+        "hero.podtitul": "Jiří Janků · Edelsteinschleifer",
+        "hero.text": "Böhmische Granate, Moldavite und Edelsteine – mit Liebe und handwerklicher Sorgfalt geschliffen. Jeder Stein erzählt seine eigene Geschichte.",
+        "hero.btnSperky": "Unser Schmuck",
+        "hero.btnKontakt": "Kontakt",
+        "hero.logoAlt": "Logo von Brusičství Janků",
+        "onas.label": "Über uns",
+        "onas.title": "Tradition und Leidenschaft für Steine",
+        "onas.subtitle": "Jeder Edelstein birgt eine Geschichte. Unsere Aufgabe ist es, sie sichtbar zu machen.",
+        "onas.p1": "Brusičství Janků ist auf das Handschleifen von böhmischen Granaten, seltenen Moldaviten sowie verschiedensten Edelsteinen und synthetischen Steinen spezialisiert. Jeder Stein wird von erfahrenen Händen und mit einem feinen Blick für Details bearbeitet.",
+        "onas.p2": "Aus den geschliffenen Steinen entsteht einzigartiger Schmuck – Ohrringe, Ringe, Armbänder, Halsketten und komplette Schmucksets. Jedes Stück wird mit Rücksicht auf die Schönheit des Materials und die Langlebigkeit der Verarbeitung gefertigt.",
+        "onas.p3": "Wir arbeiten für Privatkunden und fertigen Schmuck auch auf Bestellung an. Gerne beraten wir Sie bei der Wahl eines Steins oder verarbeiten Ihr eigenes Material.",
+        "onas.btn": "Sonderanfertigung anfragen",
+        "kamen.granat": "Böhmischer Granat",
+        "kamen.granatText": "Pyrop, der tschechische Nationalstein",
+        "kamen.vltavin": "Moldavit",
+        "kamen.vltavinText": "Ein einzigartiges Naturglas",
+        "kamen.drahokamy": "Edelsteine",
+        "kamen.drahokamyText": "Rubine, Saphire, Smaragde",
+        "kamen.synt": "Synthetische Steine",
+        "kamen.syntText": "Hochwertige Laborsteine",
+        "proces.label": "So entsteht Ihr Schmuck",
+        "proces.title": "Vom Rohstein zum Schmuckstück",
+        "proces.subtitle": "Jedes Schmuckstück durchläuft einen sorgfältigen Prozess, der ein außergewöhnliches Ergebnis garantiert.",
+        "proces.k1": "Auswahl des Steins",
+        "proces.t1": "Jeder Rohstein wird sorgfältig ausgewählt und auf seine Qualität und sein Potenzial geprüft.",
+        "proces.k2": "Schleifen",
+        "proces.t2": "Der Handschliff bringt die innere Schönheit des Steins zum Vorschein. Präzision und Geduld sind dabei entscheidend.",
+        "proces.k3": "Fassen",
+        "proces.t3": "Der geschliffene Stein wird so in das Schmuckstück gefasst, dass er zur Geltung kommt und sicher hält.",
+        "proces.k4": "Übergabe",
+        "proces.t4": "Das fertige Schmuckstück wird gründlich geprüft und sorgfältig an den Kunden übergeben.",
+        "katalog.label": "Katalog",
+        "katalog.title": "Unsere Kreationen",
+        "katalog.subtitle": "Entdecken Sie unser aktuelles Angebot. Für weitere Informationen stehen wir Ihnen gerne zur Verfügung.",
+        "katalog.nacitam": "Angebot wird geladen…",
+        "katalog.chyba": "Das Angebot konnte gerade nicht geladen werden. Bitte laden Sie die Seite neu oder kontaktieren Sie uns.",
+        "katalog.prazdny": "Derzeit haben wir keinen Schmuck im Angebot. Schreiben Sie uns – gerne fertigen wir ein Schmuckstück auf Bestellung an.",
+        "katalog.vyrobce": "Hersteller des Schmucks, sofern nicht anders angegeben: <span data-pole=\"jmeno\"></span>, <span data-pole=\"adresa\"></span>, <span data-pole=\"email\"></span>. Pflegehinweise und Sicherheitsinformationen finden Sie in den <a href=\"#dokument-obchodni-podminky\">Allgemeinen Geschäftsbedingungen</a> (auf Englisch).",
+        "katalog.vice": "Mehr anzeigen",
+        "katalog.mene": "Weniger anzeigen",
+        "katalog.kategorieAria": "Schmuckkategorien",
+        "karta.kod": "Art.-Nr.",
+        "karta.vaha": "Gewicht",
+        "karta.vyrobce": "Hersteller",
+        "karta.velikost": "Größe",
+        "karta.vyberte": "Größe wählen",
+        "karta.napoveda": "Größe = Fingerumfang in mm",
+        "karta.ihned": "Sofort versandbereit",
+        "karta.zakazka": "Auf Bestellung",
+        "karta.naDotaz": "Preis auf Anfrage",
+        "karta.foto": "Foto folgt in Kürze",
+        "karta.nejdrive": "Bitte wählen Sie zuerst eine Größe",
+        "karta.kosik": "Ich interessiere mich für dieses Schmuckstück",
+        "mnozstvi.otazka": "Gewünschte Menge eingeben:",
+        "mnozstvi.potvrdit": "Bestätigen",
+        "mnozstvi.zrusit": "Abbrechen",
+        "mnozstvi.existuje": "Ihre Anfrage enthält bereits ein Schmuckstück. Was möchten Sie mit diesem neuen Stück tun?",
+        "mnozstvi.pridat": "Zur bisherigen Auswahl hinzufügen",
+        "mnozstvi.prepsat": "Bisherige Auswahl ersetzen",
+        "mnozstvi.chyba": "Bitte geben Sie eine gültige Zahl ein (die Menge muss größer als 0 sein).",
+        "mnozstvi.velikost": "Größe {v}",
+        "poptavka.uvod": "Guten Tag,\nich interessiere mich für:",
+        "poptavka.kod": "Art.-Nr.",
+        "poptavka.vel": "Gr.",
+        "poptavka.ks": "Stk.",
+        "poptavka.naDotaz": "Preis auf Anfrage",
+        "poptavka.ihned": "sofort versandbereit",
+        "poptavka.zakazka": "auf Bestellung",
+        "poptavka.cast": "{a} Stk. sofort versandbereit, {b} Stk. auf Bestellung",
+        "kontakt.label": "Kontakt",
+        "kontakt.title": "Nehmen Sie Kontakt auf",
+        "kontakt.subtitle": "Interessieren Sie sich für ein Schmuckstück oder eine Sonderanfertigung? Wir beraten Sie gerne.",
+        "kontakt.podtitul": "Jiří Janků, Edelsteinschleifer",
+        "kontakt.telefon": "Telefon",
+        "kontakt.email": "E-Mail",
+        "kontakt.web": "Website",
+        "kontakt.provozovatel": "Betreiber",
+        "kontakt.provozovatelUdaje": "<span data-pole=\"jmeno\"></span>, Identifikationsnummer (IČO) <span data-pole=\"ico\"></span><br><span data-pole=\"adresa\"></span>",
+        "form.jmeno": "Name",
+        "form.jmenoPh": "Ihr Name",
+        "form.email": "E-Mail",
+        "form.emailPh": "ihre@email.de",
+        "form.telefon": "Telefonnummer <span class=\"optional\">(optional)</span>",
+        "form.predvolba": "Vorwahl",
+        "form.jine": "Andere (bitte in der Nachricht angeben)",
+        "form.zajem": "Interesse an <span class=\"optional\">(optional)</span>",
+        "form.vyberte": "Kategorie wählen…",
+        "form.zprava": "Nachricht",
+        "form.zpravaPh": "Beschreiben Sie, wonach Sie suchen, oder stellen Sie uns Ihre Fragen…",
+        "form.odeslat": "Nachricht senden",
+        "form.dolozka": "Die Anfrage ist unverbindlich. Mit dem Absenden der Nachricht nehme ich zur Kenntnis, dass meine personenbezogenen Daten zur Bearbeitung meiner Anfrage verarbeitet werden. Mehr dazu in der <a href=\"#dokument-ochrana-osobnich-udaju\">Datenschutzerklärung</a> (auf Englisch).",
+        "captcha.chyba": "Bitte bestätigen Sie, dass Sie kein Roboter sind.",
+        "captcha.nelze": "Die Sicherheitsprüfung konnte nicht geladen werden. Bitte laden Sie die Seite neu oder schreiben Sie uns direkt an {email}.",
+        "sluzba.zakazkova": "Sonderanfertigung",
+        "sluzba.brouseni": "Steinschliff",
+        "paticka.podtitul": "Jiří Janků · Edelsteinschleifer · +420 727 993 899 · jiri@jankustones.com",
+        "paticka.pravni": "Betreiber: <span data-pole=\"jmeno\"></span>, Geschäftsanschrift <span data-pole=\"adresa\"></span>, Identifikationsnummer (IČO) <span data-pole=\"ico\"></span>, <span data-pole=\"dic\"></span>. <span data-pole=\"rejstrik\"></span>. Kontakt: <a data-pole=\"email\"></a>, <a data-pole=\"telefon\"></a>.",
+        "paticka.op": "AGB",
+        "paticka.rr": "Reklamationsordnung",
+        "paticka.vraceni": "Rückgabe",
+        "paticka.gdpr": "Datenschutz",
+        "paticka.cookies": "Cookies",
+        "paticka.nastaveniCookies": "Cookie-Einstellungen",
+        "paticka.odstoupit": "Vertrag widerrufen",
+        "paticka.prava": "Alle Rechte vorbehalten",
+        "cookie.text": "Um unsere Website zu verbessern, möchten wir die Besucherzahlen mithilfe von Analyse-Cookies messen. Wir aktivieren diese nur mit Ihrer Einwilligung. <a href=\"#dokument-cookies\">Mehr über Cookies</a>",
+        "cookie.prijmout": "Alle akzeptieren",
+        "cookie.odmitnout": "Alle ablehnen",
+        "cookie.aria": "Cookie-Einwilligung",
+        "dok.tisk": "Drucken / als PDF speichern",
+        "dok.zavrit": "Schließen",
+        "dok.nacitam": "Wird geladen…",
+        "dok.chyba": "Das Dokument konnte nicht geladen werden. Bitte laden Sie die Seite neu oder schreiben Sie uns an {email} – wir senden es Ihnen zu.",
+        "dok.poznamka": "Rechtliche Dokumente stehen auf Englisch zur Verfügung.",
+        "pole.rejstrik": "Natürliche Person, eingetragen im tschechischen Gewerberegister",
+        "pole.ico": "Identifikationsnummer (IČO)",
+        "pole.dic": "USt-IdNr.",
+        "pole.neplatce": "nicht umsatzsteuerpflichtig",
+        "odst.nadpis": "Vertrag widerrufen",
+        "odst.uvod": "Bitte geben Sie die Daten an, anhand derer wir Ihre Bestellung finden. Im nächsten Schritt bestätigen Sie den Widerruf. Die Regeln für die Rücksendung finden Sie in der <a href=\"#dokument-odstoupeni-od-smlouvy\">Widerrufsbelehrung</a> (auf Englisch).",
+        "odst.jmeno": "Vor- und Nachname",
+        "odst.email": "E-Mail (hierhin senden wir die Bestätigung)",
+        "odst.zbozi": "Welche Ware senden Sie zurück (Art.-Nr. oder Bestellnummer)",
+        "odst.datum": "Bestell- oder Empfangsdatum",
+        "odst.datumPh": "z. B. 12.10.2026",
+        "odst.ucet": "Kontonummer (IBAN) für die Rückzahlung",
+        "odst.nepovinne": "(optional)",
+        "odst.pokracovat": "Weiter",
+        "odst.chyba": "Bitte geben Sie Ihren Namen, eine gültige E-Mail-Adresse und die zurückgesendete Ware an.",
+        "odst.nadpis2": "Widerruf bestätigen",
+        "odst.text2": "Bitte überprüfen Sie Ihre Angaben. Mit einem Klick auf die Schaltfläche unten widerrufen Sie den Kaufvertrag über die angegebene Ware.",
+        "odst.potvrdit": "Widerruf bestätigen",
+        "odst.upravit": "Angaben ändern",
+        "odst.odesilam": "Wird gesendet…",
+        "odst.nadpis3": "Ihr Widerruf ist bei uns eingegangen",
+        "odst.text3": "Vielen Dank. Ihr Widerruf ist am {datum} bei uns eingegangen. Eine Bestätigung über seinen Inhalt senden wir Ihnen unverzüglich an {email}.",
+        "odst.vratit": "Bitte senden Sie uns das Schmuckstück innerhalb von 14 Tagen an folgende Adresse zurück: {adresa}. Wir erstatten Ihnen den Betrag innerhalb von 14 Tagen nach dem Widerruf, jedoch nicht, bevor wir die Ware erhalten haben oder Sie die Rücksendung nachgewiesen haben.",
+        "odst.chybaOdeslani": "Der Widerruf konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder senden Sie ihn per E-Mail an {email}.",
+        "odst.sJmeno": "Name",
+        "odst.sEmail": "E-Mail",
+        "odst.sZbozi": "Ware",
+        "odst.sDatum": "Bestell-/Empfangsdatum",
+        "odst.sUcet": "Kontonummer",
+        "odst.sPrijato": "Widerruf eingegangen",
+        "odst.casSpojka": "um"
+      },
+
+      sk: {
+        "meta.title": "Brusičství Janků – Jiří Janků, brusič drahých kameňov",
+        "nav.produkty": "Produkty",
+        "nav.onas": "O nás",
+        "nav.kontakt": "Kontakt",
+        "nav.menuOtevrit": "Otvoriť menu",
+        "nav.menuZavrit": "Zavrieť menu",
+        "nav.jazyk": "Jazyk",
+        "hero.badge": "Ručné brúsenie drahých kameňov",
+        "hero.podtitul": "Jiří Janků · brusič drahých kameňov",
+        "hero.text": "České granáty, vltavíny a drahokamy brúsené s láskou a remeselnou starostlivosťou. Každý kameň je jedinečný príbeh.",
+        "hero.btnSperky": "Naše šperky",
+        "hero.btnKontakt": "Kontaktovať",
+        "hero.logoAlt": "Logo Brusičství Janků",
+        "onas.label": "O nás",
+        "onas.title": "Tradícia a vášeň pre kamene",
+        "onas.subtitle": "Každý drahý kameň skrýva príbeh. Naším poslaním je odhaliť ho.",
+        "onas.p1": "Brusičství Janků sa špecializuje na ručné brúsenie českých granátov, vzácnych vltavínov a najrôznejších drahokamov a syntetických kameňov. Každý kameň prechádza rukami s dlhoročnou praxou a citlivým okom pre detail.",
+        "onas.p2": "Z brúsených kameňov potom vznikajú jedinečné šperky – náušnice, prstene, náramky, náhrdelníky aj kompletné súpravy. Všetko je vyrobené s ohľadom na krásu materiálu a trvácnosť spracovania.",
+        "onas.p3": "Pracujeme pre súkromných zákazníkov aj na zákazku. Radi vám poradíme s výberom kameňa alebo spracujeme váš vlastný materiál.",
+        "onas.btn": "Opýtať sa na zákazku",
+        "kamen.granat": "Český granát",
+        "kamen.granatText": "Pyrop, český národný drahokam",
+        "kamen.vltavin": "Vltavín",
+        "kamen.vltavinText": "Unikátne prírodné sklo",
+        "kamen.drahokamy": "Drahokamy",
+        "kamen.drahokamyText": "Rubíny, zafíry, smaragdy",
+        "kamen.synt": "Syntetické kamene",
+        "kamen.syntText": "Kvalitné laboratórne kamene",
+        "proces.label": "Ako to funguje",
+        "proces.title": "Od surového kameňa k šperku",
+        "proces.subtitle": "Každý šperk prechádza starostlivým procesom, ktorý zaručuje výnimočný výsledok.",
+        "proces.k1": "Výber kameňa",
+        "proces.t1": "Každý surový kameň je starostlivo vybraný a posúdený z hľadiska kvality a potenciálu.",
+        "proces.k2": "Brúsenie",
+        "proces.t2": "Ručné brúsenie odhaľuje vnútornú krásu kameňa. Presnosť a trpezlivosť sú kľúčové.",
+        "proces.k3": "Osadenie",
+        "proces.t3": "Brúsený kameň je osadený do šperku tak, aby vynikol a bol bezpečne upevnený.",
+        "proces.k4": "Odovzdanie",
+        "proces.t4": "Hotový šperk je dôkladne skontrolovaný a starostlivo odovzdaný zákazníkovi.",
+        "katalog.label": "Katalóg",
+        "katalog.title": "Naša tvorba",
+        "katalog.subtitle": "Prezrite si našu aktuálnu ponuku. Ak potrebujete viac informácií, neváhajte nás kontaktovať.",
+        "katalog.nacitam": "Načítavam ponuku…",
+        "katalog.chyba": "Ponuku sa teraz nepodarilo načítať. Obnovte, prosím, stránku alebo nás kontaktujte.",
+        "katalog.prazdny": "Momentálne nemáme v ponuke žiadne šperky. Napíšte nám, radi vám šperk vyrobíme na zákazku.",
+        "katalog.vyrobce": "Výrobca šperkov, ak pri šperku nie je uvedené inak: <span data-pole=\"jmeno\"></span>, <span data-pole=\"adresa\"></span>, <span data-pole=\"email\"></span>. Starostlivosť o šperky a bezpečnostné informácie nájdete v <a href=\"#dokument-obchodni-podminky\">obchodných podmienkach</a> (v angličtine).",
+        "katalog.vice": "Zobraziť viac",
+        "katalog.mene": "Zobraziť menej",
+        "katalog.kategorieAria": "Kategórie šperkov",
+        "karta.kod": "Kód",
+        "karta.vaha": "Hmotnosť",
+        "karta.vyrobce": "Výrobca",
+        "karta.velikost": "Veľkosť",
+        "karta.vyberte": "Vyberte veľkosť",
+        "karta.napoveda": "Veľkosť = obvod prsta v mm",
+        "karta.ihned": "Pripravené na odoslanie",
+        "karta.zakazka": "Na zákazku",
+        "karta.naDotaz": "Cena na vyžiadanie",
+        "karta.foto": "Fotografia sa pripravuje",
+        "karta.nejdrive": "Najprv vyberte veľkosť",
+        "karta.kosik": "Mám záujem o tento šperk",
+        "mnozstvi.otazka": "Zadajte požadované množstvo:",
+        "mnozstvi.potvrdit": "Potvrdiť",
+        "mnozstvi.zrusit": "Zrušiť",
+        "mnozstvi.existuje": "V dopyte už máte vyplnený šperk. Čo si želáte urobiť s týmto novým?",
+        "mnozstvi.pridat": "Pridať k súčasnému výberu",
+        "mnozstvi.prepsat": "Prepísať pôvodný výber",
+        "mnozstvi.chyba": "Zadajte, prosím, platné číslo (množstvo musí byť väčšie ako 0).",
+        "mnozstvi.velikost": "veľkosť {v}",
+        "poptavka.uvod": "Dobrý deň,\nmal/a by som záujem o:",
+        "poptavka.kod": "kód",
+        "poptavka.vel": "veľ.",
+        "poptavka.ks": "ks",
+        "poptavka.naDotaz": "cena na vyžiadanie",
+        "poptavka.ihned": "pripravené na odoslanie",
+        "poptavka.zakazka": "na zákazku",
+        "poptavka.cast": "{a} ks pripravené na odoslanie, {b} ks na zákazku",
+        "kontakt.label": "Kontakt",
+        "kontakt.title": "Spojte sa s nami",
+        "kontakt.subtitle": "Máte záujem o šperk alebo zákazku? Radi vám poradíme.",
+        "kontakt.podtitul": "Jiří Janků, brusič drahých kameňov",
+        "kontakt.telefon": "Telefón",
+        "kontakt.email": "E-mail",
+        "kontakt.web": "Web",
+        "kontakt.provozovatel": "Prevádzkovateľ",
+        "kontakt.provozovatelUdaje": "<span data-pole=\"jmeno\"></span>, IČO <span data-pole=\"ico\"></span><br><span data-pole=\"adresa\"></span>",
+        "form.jmeno": "Meno",
+        "form.jmenoPh": "Vaše meno",
+        "form.email": "E-mail",
+        "form.emailPh": "vas@email.sk",
+        "form.telefon": "Telefónne číslo <span class=\"optional\">(nepovinné)</span>",
+        "form.predvolba": "Predvoľba",
+        "form.jine": "Iná (napíšte do správy)",
+        "form.zajem": "Záujem o <span class=\"optional\">(nepovinné)</span>",
+        "form.vyberte": "Vyberte kategóriu…",
+        "form.zprava": "Správa",
+        "form.zpravaPh": "Opíšte, čo hľadáte, alebo sa opýtajte na čokoľvek…",
+        "form.odeslat": "Odoslať správu",
+        "form.dolozka": "Odoslanie dopytu je nezáväzné. Odoslaním správy beriem na vedomie spracovanie svojich osobných údajov na účel vybavenia dopytu. Viac v <a href=\"#dokument-ochrana-osobnich-udaju\">Zásadách spracovania osobných údajov</a> (v angličtine).",
+        "captcha.chyba": "Potvrďte, prosím, že nie ste robot.",
+        "captcha.nelze": "Overenie „nie som robot“ sa nepodarilo načítať. Skúste obnoviť stránku alebo nám napíšte priamo na {email}.",
+        "sluzba.zakazkova": "Zákazková výroba",
+        "sluzba.brouseni": "Brúsenie kameňa",
+        "paticka.podtitul": "Jiří Janků · brusič drahých kameňov · +420 727 993 899 · jiri@jankustones.com",
+        "paticka.pravni": "Prevádzkovateľ: <span data-pole=\"jmeno\"></span>, miesto podnikania <span data-pole=\"adresa\"></span>, IČO <span data-pole=\"ico\"></span>, <span data-pole=\"dic\"></span>. <span data-pole=\"rejstrik\"></span>. Kontakt: <a data-pole=\"email\"></a>, <a data-pole=\"telefon\"></a>.",
+        "paticka.op": "Obchodné podmienky",
+        "paticka.rr": "Reklamačný poriadok",
+        "paticka.vraceni": "Vrátenie tovaru",
+        "paticka.gdpr": "Ochrana osobných údajov",
+        "paticka.cookies": "Cookies",
+        "paticka.nastaveniCookies": "Nastavenia cookies",
+        "paticka.odstoupit": "Odstúpiť od zmluvy",
+        "paticka.prava": "Všetky práva vyhradené",
+        "cookie.text": "Radi by sme merali návštevnosť webu pomocou analytických cookies, aby sme ho mohli zlepšovať. Spustíme ich iba s vaším súhlasom. <a href=\"#dokument-cookies\">Viac o cookies</a>",
+        "cookie.prijmout": "Prijať všetko",
+        "cookie.odmitnout": "Odmietnuť všetko",
+        "cookie.aria": "Súhlas s cookies",
+        "dok.tisk": "Vytlačiť / uložiť PDF",
+        "dok.zavrit": "Zavrieť",
+        "dok.nacitam": "Načítavam…",
+        "dok.chyba": "Dokument sa nepodarilo načítať. Obnovte, prosím, stránku alebo nám napíšte na {email} a pošleme vám ho.",
+        "dok.poznamka": "Právne dokumenty sú k dispozícii v angličtine.",
+        "pole.rejstrik": "Fyzická osoba zapísaná v živnostenskom registri Českej republiky",
+        "pole.ico": "IČO",
+        "pole.dic": "DIČ",
+        "pole.neplatce": "neplatiteľ DPH",
+        "odst.nadpis": "Odstúpiť od zmluvy",
+        "odst.uvod": "Vyplňte, prosím, údaje, podľa ktorých nájdeme vašu objednávku. V ďalšom kroku odstúpenie potvrdíte. Pravidlá vrátenia tovaru nájdete v <a href=\"#dokument-odstoupeni-od-smlouvy\">poučení o odstúpení</a> (v angličtine).",
+        "odst.jmeno": "Meno a priezvisko",
+        "odst.email": "E-mail (pošleme naň potvrdenie)",
+        "odst.zbozi": "Ktorý tovar vraciate (kód šperku alebo číslo objednávky)",
+        "odst.datum": "Dátum objednania alebo prevzatia",
+        "odst.datumPh": "napr. 12. 10. 2026",
+        "odst.ucet": "Číslo účtu (IBAN) na vrátenie peňazí",
+        "odst.nepovinne": "(nepovinné)",
+        "odst.pokracovat": "Pokračovať",
+        "odst.chyba": "Vyplňte, prosím, meno, platný e-mail a tovar, ktorý vraciate.",
+        "odst.nadpis2": "Potvrdenie odstúpenia",
+        "odst.text2": "Skontrolujte, prosím, údaje. Stlačením tlačidla nižšie odstúpite od zmluvy o kúpe uvedeného tovaru.",
+        "odst.potvrdit": "Potvrdiť odstúpenie",
+        "odst.upravit": "Upraviť údaje",
+        "odst.odesilam": "Odosielam…",
+        "odst.nadpis3": "Odstúpenie sme prijali",
+        "odst.text3": "Ďakujeme. Vaše odstúpenie od zmluvy sme prijali {datum}. Potvrdenie s jeho obsahom vám bez zbytočného odkladu pošleme na e-mail {email}.",
+        "odst.vratit": "Šperk nám, prosím, pošlite do 14 dní na adresu {adresa}. Peniaze vám vrátime do 14 dní od odstúpenia, najskôr však po doručení tovaru alebo preukázaní jeho odoslania.",
+        "odst.chybaOdeslani": "Odstúpenie sa nepodarilo odoslať. Skúste to, prosím, znova alebo ho pošlite e-mailom na {email}.",
+        "odst.sJmeno": "Meno",
+        "odst.sEmail": "E-mail",
+        "odst.sZbozi": "Tovar",
+        "odst.sDatum": "Dátum objednania / prevzatia",
+        "odst.sUcet": "Číslo účtu",
+        "odst.sPrijato": "Odstúpenie prijaté",
+        "odst.casSpojka": "o"
+      },
+
+      pl: {
+        "meta.title": "Brusičství Janků – Jiří Janků, szlifierz kamieni szlachetnych",
+        "nav.produkty": "Produkty",
+        "nav.onas": "O nas",
+        "nav.kontakt": "Kontakt",
+        "nav.menuOtevrit": "Otwórz menu",
+        "nav.menuZavrit": "Zamknij menu",
+        "nav.jazyk": "Język",
+        "hero.badge": "Ręczne szlifowanie kamieni szlachetnych",
+        "hero.podtitul": "Jiří Janků · szlifierz kamieni szlachetnych",
+        "hero.text": "Czeskie granaty, mołdawity i kamienie szlachetne szlifowane z miłością i rzemieślniczą starannością. Każdy kamień to niepowtarzalna historia.",
+        "hero.btnSperky": "Nasza biżuteria",
+        "hero.btnKontakt": "Kontakt",
+        "hero.logoAlt": "Logo Brusičství Janků",
+        "onas.label": "O nas",
+        "onas.title": "Tradycja i pasja do kamieni",
+        "onas.subtitle": "Każdy kamień szlachetny skrywa historię. Naszą misją jest ją odsłonić.",
+        "onas.p1": "Brusičství Janků specjalizuje się w ręcznym szlifowaniu czeskich granatów, rzadkich mołdawitów oraz najróżniejszych kamieni szlachetnych i syntetycznych. Każdy kamień przechodzi przez doświadczone ręce i jest obrabiany z dbałością o najmniejszy szczegół.",
+        "onas.p2": "Z oszlifowanych kamieni powstaje wyjątkowa biżuteria – kolczyki, pierścionki, bransoletki, naszyjniki i kompletne zestawy. Każdy element wykonujemy z dbałością o piękno materiału i trwałość wykonania.",
+        "onas.p3": "Pracujemy dla klientów indywidualnych, a także wykonujemy biżuterię na zamówienie. Chętnie pomożemy Ci wybrać kamień lub obrobimy Twój własny materiał.",
+        "onas.btn": "Zapytaj o zamówienie",
+        "kamen.granat": "Czeski granat",
+        "kamen.granatText": "Pirop, czeski kamień narodowy",
+        "kamen.vltavin": "Mołdawit",
+        "kamen.vltavinText": "Wyjątkowe szkło naturalne",
+        "kamen.drahokamy": "Kamienie szlachetne",
+        "kamen.drahokamyText": "Rubiny, szafiry, szmaragdy",
+        "kamen.synt": "Kamienie syntetyczne",
+        "kamen.syntText": "Wysokiej jakości kamienie laboratoryjne",
+        "proces.label": "Jak to działa",
+        "proces.title": "Od surowego kamienia do biżuterii",
+        "proces.subtitle": "Każdy element biżuterii przechodzi staranny proces, który gwarantuje wyjątkowy efekt.",
+        "proces.k1": "Wybór kamienia",
+        "proces.t1": "Każdy surowy kamień jest starannie wybierany i oceniany pod kątem jakości i potencjału.",
+        "proces.k2": "Szlifowanie",
+        "proces.t2": "Ręczne szlifowanie wydobywa wewnętrzne piękno kamienia. Kluczowe są precyzja i cierpliwość.",
+        "proces.k3": "Oprawa",
+        "proces.t3": "Oszlifowany kamień zostaje oprawiony tak, aby się wyróżniał i był bezpiecznie osadzony.",
+        "proces.k4": "Przekazanie",
+        "proces.t4": "Gotowa biżuteria jest dokładnie sprawdzana i starannie przekazywana klientowi.",
+        "katalog.label": "Katalog",
+        "katalog.title": "Nasze wyroby",
+        "katalog.subtitle": "Zobacz naszą aktualną ofertę. Jeśli potrzebujesz więcej informacji, skontaktuj się z nami.",
+        "katalog.nacitam": "Wczytywanie oferty…",
+        "katalog.chyba": "Nie udało się teraz wczytać oferty. Odśwież stronę lub skontaktuj się z nami.",
+        "katalog.prazdny": "Obecnie nie mamy w ofercie żadnej biżuterii. Napisz do nas – chętnie wykonamy ją na zamówienie.",
+        "katalog.vyrobce": "Producent biżuterii, o ile przy produkcie nie podano inaczej: <span data-pole=\"jmeno\"></span>, <span data-pole=\"adresa\"></span>, <span data-pole=\"email\"></span>. Informacje o pielęgnacji i bezpieczeństwie znajdziesz w <a href=\"#dokument-obchodni-podminky\">regulaminie</a> (w języku angielskim).",
+        "katalog.vice": "Pokaż więcej",
+        "katalog.mene": "Pokaż mniej",
+        "katalog.kategorieAria": "Kategorie biżuterii",
+        "karta.kod": "Kod",
+        "karta.vaha": "Waga",
+        "karta.vyrobce": "Producent",
+        "karta.velikost": "Rozmiar",
+        "karta.vyberte": "Wybierz rozmiar",
+        "karta.napoveda": "Rozmiar = obwód palca w mm",
+        "karta.ihned": "Wysyłka od ręki",
+        "karta.zakazka": "Na zamówienie",
+        "karta.naDotaz": "Cena na zapytanie",
+        "karta.foto": "Zdjęcie wkrótce",
+        "karta.nejdrive": "Najpierw wybierz rozmiar",
+        "karta.kosik": "Interesuje mnie ta biżuteria",
+        "mnozstvi.otazka": "Podaj ilość:",
+        "mnozstvi.potvrdit": "Potwierdź",
+        "mnozstvi.zrusit": "Anuluj",
+        "mnozstvi.existuje": "Twoje zapytanie zawiera już biżuterię. Co chcesz zrobić z nową pozycją?",
+        "mnozstvi.pridat": "Dodaj do obecnego wyboru",
+        "mnozstvi.prepsat": "Zastąp poprzedni wybór",
+        "mnozstvi.chyba": "Podaj prawidłową liczbę (ilość musi być większa od 0).",
+        "mnozstvi.velikost": "rozmiar {v}",
+        "poptavka.uvod": "Dzień dobry,\njestem zainteresowany/-a następującymi produktami:",
+        "poptavka.kod": "kod",
+        "poptavka.vel": "rozm.",
+        "poptavka.ks": "szt.",
+        "poptavka.naDotaz": "cena na zapytanie",
+        "poptavka.ihned": "wysyłka od ręki",
+        "poptavka.zakazka": "na zamówienie",
+        "poptavka.cast": "{a} szt. – wysyłka od ręki, {b} szt. – na zamówienie",
+        "kontakt.label": "Kontakt",
+        "kontakt.title": "Skontaktuj się z nami",
+        "kontakt.subtitle": "Interesuje Cię biżuteria lub zamówienie indywidualne? Chętnie doradzimy.",
+        "kontakt.podtitul": "Jiří Janků, szlifierz kamieni szlachetnych",
+        "kontakt.telefon": "Telefon",
+        "kontakt.email": "E-mail",
+        "kontakt.web": "Strona internetowa",
+        "kontakt.provozovatel": "Sprzedawca",
+        "kontakt.provozovatelUdaje": "<span data-pole=\"jmeno\"></span>, numer identyfikacyjny (IČO) <span data-pole=\"ico\"></span><br><span data-pole=\"adresa\"></span>",
+        "form.jmeno": "Imię i nazwisko",
+        "form.jmenoPh": "Twoje imię i nazwisko",
+        "form.email": "E-mail",
+        "form.emailPh": "twoj@email.pl",
+        "form.telefon": "Numer telefonu <span class=\"optional\">(opcjonalnie)</span>",
+        "form.predvolba": "Numer kierunkowy",
+        "form.jine": "Inny (wpisz w wiadomości)",
+        "form.zajem": "Interesuje mnie <span class=\"optional\">(opcjonalnie)</span>",
+        "form.vyberte": "Wybierz kategorię…",
+        "form.zprava": "Wiadomość",
+        "form.zpravaPh": "Opisz, czego szukasz, lub zadaj nam dowolne pytanie…",
+        "form.odeslat": "Wyślij wiadomość",
+        "form.dolozka": "Wysłanie zapytania jest niezobowiązujące. Wysyłając formularz, przyjmuję do wiadomości, że moje dane osobowe będą przetwarzane w celu obsługi zapytania. Więcej informacji w <a href=\"#dokument-ochrana-osobnich-udaju\">Polityce prywatności</a> (w języku angielskim).",
+        "captcha.chyba": "Potwierdź, że nie jesteś robotem.",
+        "captcha.nelze": "Nie udało się wczytać weryfikacji „nie jestem robotem”. Odśwież stronę lub napisz do nas bezpośrednio na adres {email}.",
+        "sluzba.zakazkova": "Biżuteria na zamówienie",
+        "sluzba.brouseni": "Szlifowanie kamienia",
+        "paticka.podtitul": "Jiří Janků · szlifierz kamieni szlachetnych · +420 727 993 899 · jiri@jankustones.com",
+        "paticka.pravni": "Sprzedawca: <span data-pole=\"jmeno\"></span>, miejsce prowadzenia działalności <span data-pole=\"adresa\"></span>, numer identyfikacyjny (IČO) <span data-pole=\"ico\"></span>, <span data-pole=\"dic\"></span>. <span data-pole=\"rejstrik\"></span>. Kontakt: <a data-pole=\"email\"></a>, <a data-pole=\"telefon\"></a>.",
+        "paticka.op": "Regulamin",
+        "paticka.rr": "Procedura reklamacyjna",
+        "paticka.vraceni": "Zwroty",
+        "paticka.gdpr": "Polityka prywatności",
+        "paticka.cookies": "Pliki cookie",
+        "paticka.nastaveniCookies": "Ustawienia plików cookie",
+        "paticka.odstoupit": "Odstąp od umowy",
+        "paticka.prava": "Wszelkie prawa zastrzeżone",
+        "cookie.text": "Chcielibyśmy mierzyć ruch na stronie za pomocą analitycznych plików cookie, aby ją ulepszać. Włączymy je tylko za Twoją zgodą. <a href=\"#dokument-cookies\">Więcej o plikach cookie</a>",
+        "cookie.prijmout": "Zaakceptuj wszystkie",
+        "cookie.odmitnout": "Odrzuć wszystkie",
+        "cookie.aria": "Zgoda na pliki cookie",
+        "dok.tisk": "Drukuj / zapisz jako PDF",
+        "dok.zavrit": "Zamknij",
+        "dok.nacitam": "Wczytywanie…",
+        "dok.chyba": "Nie udało się wczytać dokumentu. Odśwież stronę lub napisz do nas na adres {email}, a wyślemy go do Ciebie.",
+        "dok.poznamka": "Dokumenty prawne są dostępne w języku angielskim.",
+        "pole.rejstrik": "Osoba fizyczna wpisana do czeskiego rejestru działalności gospodarczej",
+        "pole.ico": "numer identyfikacyjny (IČO)",
+        "pole.dic": "numer VAT UE",
+        "pole.neplatce": "niebędący płatnikiem VAT",
+        "odst.nadpis": "Odstąpienie od umowy",
+        "odst.uvod": "Podaj dane, na podstawie których odnajdziemy Twoje zamówienie. W kolejnym kroku potwierdzisz odstąpienie od umowy. Zasady zwrotu towaru znajdziesz w <a href=\"#dokument-odstoupeni-od-smlouvy\">informacji o odstąpieniu od umowy</a> (w języku angielskim).",
+        "odst.jmeno": "Imię i nazwisko",
+        "odst.email": "E-mail (wyślemy na niego potwierdzenie)",
+        "odst.zbozi": "Który towar zwracasz (kod produktu lub numer zamówienia)",
+        "odst.datum": "Data zamówienia lub odbioru",
+        "odst.datumPh": "np. 12.10.2026",
+        "odst.ucet": "Numer konta (IBAN) do zwrotu pieniędzy",
+        "odst.nepovinne": "(opcjonalnie)",
+        "odst.pokracovat": "Dalej",
+        "odst.chyba": "Podaj imię i nazwisko, prawidłowy adres e-mail oraz zwracany towar.",
+        "odst.nadpis2": "Potwierdzenie odstąpienia od umowy",
+        "odst.text2": "Sprawdź swoje dane. Klikając przycisk poniżej, odstępujesz od umowy zakupu wskazanego towaru.",
+        "odst.potvrdit": "Potwierdź odstąpienie",
+        "odst.upravit": "Popraw dane",
+        "odst.odesilam": "Wysyłanie…",
+        "odst.nadpis3": "Otrzymaliśmy Twoje oświadczenie o odstąpieniu od umowy",
+        "odst.text3": "Dziękujemy. Twoje oświadczenie o odstąpieniu od umowy otrzymaliśmy {datum}. Potwierdzenie z jego treścią niezwłocznie wyślemy na adres {email}.",
+        "odst.vratit": "Odeślij nam biżuterię w ciągu 14 dni na adres: {adresa}. Zwrócimy pieniądze w ciągu 14 dni od odstąpienia od umowy, jednak dopiero po otrzymaniu towaru lub przedstawieniu dowodu jego odesłania.",
+        "odst.chybaOdeslani": "Nie udało się wysłać oświadczenia o odstąpieniu od umowy. Spróbuj ponownie lub wyślij je e-mailem na adres {email}.",
+        "odst.sJmeno": "Imię i nazwisko",
+        "odst.sEmail": "E-mail",
+        "odst.sZbozi": "Towar",
+        "odst.sDatum": "Data zamówienia / odbioru",
+        "odst.sUcet": "Numer konta",
+        "odst.sPrijato": "Oświadczenie otrzymano",
+        "odst.casSpojka": "o"
+      }
+    };
+  </script>
+  <script>
+    // =====================================================================
+    //  ÚDAJE O PROVOZOVATELI – vyplňte jen zde, propíšou se do patičky,
+    //  kontaktu i do všech dokumentů (obchodní podmínky, GDPR…).
+    //  Prázdná položka se na webu zobrazí žlutě jako „DOPLNIT“.
+    // =====================================================================
+    const PROVOZOVATEL = {
+      jmeno: 'Jiří Janků',
+      adresa: 'Přepeře 53, 512 61 Turnov',   // místo podnikání
+      adresaVraceni: '',       // kam posílat vrácené/reklamované zboží; prázdné = stejná jako adresa
+      ico: '29998492',
+      platceDph: false,        // true = plátce DPH, false = neplátce
+      dic: '',                 // např. 'CZ1234567890' (jen plátce DPH nebo identifikovaná osoba)
+      rejstrik: 'Fyzická osoba zapsaná v živnostenském rejstříku',
+      zivnostenskyUrad: 'Městský úřad Turnov, obecní živnostenský úřad',
+      email: 'jiri@jankustones.com',
+      telefon: '+420 727 993 899',
+      web: 'www.jankustones.cz',
+      instagram: 'jankustones',
+      ucet: '2664482005/5500',
+      iban: 'CZ73 5500 0000 0026 6448 2005',
+      hosting: 'GitHub, Inc. (GitHub Pages), USA'   // při změně hostingu přepište, propíše se do GDPR
+    };
+
+    // ---- JAZYKY ----
+    const JAZYKY = { cs: 'Čeština', en: 'English', de: 'Deutsch', sk: 'Slovenčina', pl: 'Polski' };
+    const LOCALE = { cs: 'cs-CZ', en: 'en-US', de: 'de-DE', sk: 'sk-SK', pl: 'pl-PL' };
+    // Právní dokumenty: čeština = česká verze, ostatní jazyky = anglická verze (složka dokumenty/en/)
+
+    // ---- COOKIES ----
+    // ID Google Analytics se nastavuje v hlavičce stránky (window.GA_ID). Když je vyplněné, zobrazí se cookie lišta.
+    const VZDY_ZOBRAZIT_COOKIE_LISTU = false;
+    const PLATNOST_SOUHLASU_DNI = 365;
+
+    // =====================================================================
+    //  KATALOG Z TABULKY (seznam.xlsx)
+    //  Každý list v tabulce = jedna kategorie na webu.
+    //  Sloupce se hledají podle názvu v hlavičce (pořadí nevadí):
+    //    Kód, Kód web, web (název obrázku), Cena CZK, Cena EUR, Váha,
+    //    Velikost, Množství, nazev, popis, výrobce
+    //  Volitelné překlady názvu a popisu: nazev_en, nazev_de, nazev_sk, nazev_pl
+    //    (a stejně popis_en …). Když překlad chybí, použije se český název.
+    //  Řádky se stejným kódem (v rámci listu a skupiny) se sloučí do jedné
+    //  položky s výběrem velikosti.
+    // =====================================================================
+    const SOUBOR_TABULKY = 'seznam.xlsx';
+    const SLOZKA_OBRAZKU = 'obrazky/';   // '' = obrázky leží vedle index.html
+    // Na webu se zobrazí jen KOMPLETNÍ produkty: mají název (sloupec „nazev“), obrázek (sloupec „web“,
+    // soubor musí existovat ve složce obrazky) a cenu v Kč. Kategorie bez jediného kompletního produktu se skryje.
+    // Nastavením na false se zobrazí vše (chybějící údaje se nahradí obecným textem).
+    const ZOBRAZOVAT_JEN_KOMPLETNI = true;
+    const VIDITELNYCH_POLOZEK = 6;       // kolik položek je vidět před „Zobrazit více“
+    // Evropská velikost prstenu (ISO 8653) = vnitřní obvod v mm.
+    // Do nabídky se navíc vždy přidají i velikosti, které jsou v tabulce (např. 53,5).
+    const VELIKOSTI_PRSTENU = { od: 46, do: 70, krok: 1 };
+
+    // Názvy kategorií (listů tabulky) v jednotlivých jazycích. Nový list doplňte sem.
+    const PREKLADY_KATEGORII = {
+      'Prsteny':     { cs: 'Prsteny', en: 'Rings', de: 'Ringe', sk: 'Prstene', pl: 'Pierścionki' },
+      'Závěsy':      { cs: 'Závěsy', en: 'Pendants', de: 'Anhänger', sk: 'Prívesky', pl: 'Wisiorki' },
+      'Náušnice':    { cs: 'Náušnice', en: 'Earrings', de: 'Ohrringe', sk: 'Náušnice', pl: 'Kolczyki' },
+      'Soupravy':    { cs: 'Soupravy', en: 'Jewelry sets', de: 'Schmucksets', sk: 'Súpravy', pl: 'Komplety' },
+      'Vltavínové':  { cs: 'Vltavínové šperky', en: 'Moldavite jewelry', de: 'Moldavitschmuck', sk: 'Vltavínové šperky', pl: 'Biżuteria z mołdawitem' },
+      'Náhrdelníky': { cs: 'Náhrdelníky', en: 'Necklaces', de: 'Halsketten', sk: 'Náhrdelníky', pl: 'Naszyjniki' },
+      'Náramky':     { cs: 'Náramky', en: 'Bracelets', de: 'Armbänder', sk: 'Náramky', pl: 'Bransoletki' }
+    };
+    // Obecné názvy šperků (použijí se, když položka nemá vlastní název, a na začátku českého názvu)
+    const PREKLADY_SLOV = {
+      'Prsten':     { cs: 'Prsten', en: 'Ring', de: 'Ring', sk: 'Prsteň', pl: 'Pierścionek' },
+      'Závěs':      { cs: 'Závěs', en: 'Pendant', de: 'Anhänger', sk: 'Prívesok', pl: 'Wisiorek' },
+      'Náušnice':   { cs: 'Náušnice', en: 'Earrings', de: 'Ohrringe', sk: 'Náušnice', pl: 'Kolczyki' },
+      'Souprava':   { cs: 'Souprava', en: 'Jewelry set', de: 'Schmuckset', sk: 'Súprava', pl: 'Komplet' },
+      'Náhrdelník': { cs: 'Náhrdelník', en: 'Necklace', de: 'Halskette', sk: 'Náhrdelník', pl: 'Naszyjnik' },
+      'Náramek':    { cs: 'Náramek', en: 'Bracelet', de: 'Armband', sk: 'Náramok', pl: 'Bransoletka' }
+    };
+    const JEDNOTNE_CISLO = { 'Prsteny': 'Prsten', 'Závěsy': 'Závěs', 'Soupravy': 'Souprava', 'Náhrdelníky': 'Náhrdelník', 'Náramky': 'Náramek', 'Vltavínové': 'Šperk' };
+    PREKLADY_SLOV['Šperk'] = { cs: 'Šperk', en: 'Jewelry', de: 'Schmuckstück', sk: 'Šperk', pl: 'Biżuteria' };
+    // Služby ve výběru formuláře: hodnota (česky, přijde vám e-mailem) → klíč překladu
+    const SLUZBY_VE_FORMULARI = { 'Zakázková výroba': 'sluzba.zakazkova', 'Broušení kamene': 'sluzba.brouseni' };
+
+    // =====================================================================
+    //  JAZYK STRÁNKY
+    // =====================================================================
+    function zjistiJazyk() {
+      const z = new URLSearchParams(location.search).get('lang');
+      if (z && JAZYKY[z]) return z;
+      try { const u = localStorage.getItem('jazyk'); if (u && JAZYKY[u]) return u; } catch (e) { }
+      for (const l of (navigator.languages || [navigator.language || ''])) {
+        const k = String(l).slice(0, 2).toLowerCase();
+        if (JAZYKY[k]) return k;
+      }
+      return 'en';
+    }
+    let JAZYK = zjistiJazyk();
+    const jazykDokumentu = () => (JAZYK === 'cs' ? 'cs' : 'en');
+    function t(klic, prom = {}) {
+      let s = (I18N[JAZYK] && I18N[JAZYK][klic]) ?? I18N.cs[klic] ?? klic;
+      return s.replace(/\{(\w+)\}/g, (m, k) => (k in prom ? prom[k] : m));
+    }
+    const loc = () => LOCALE[JAZYK];
+
+    // ---- Pomocné funkce ----
+    const OBRAZEK_RE = /\.(jpe?g|png|webp|gif|avif)$/i;
+    const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/\./g, ' ').replace(/\s+/g, ' ').trim();
+    const normKlic = s => norm(s).replace(/[^a-z0-9]/g, '');
+    const prazdne = v => v === null || v === undefined || String(v).trim() === '' || /^\?+$/.test(String(v).trim());
+    const cislo = v => {
+      if (typeof v === 'number') return isFinite(v) ? v : null;
+      if (prazdne(v)) return null;
+      const n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.'));
+      return isNaN(n) ? null : n;
+    };
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const fmtMena = (n, mena) => {
+      if (JAZYK === 'cs' && mena === 'CZK') return Math.round(n).toLocaleString('cs-CZ') + ' Kč';
+      return new Intl.NumberFormat(loc(), { style: 'currency', currency: mena, maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(n);
+    };
+    const fmtKc = n => fmtMena(n, 'CZK');
+    const fmtEur = n => fmtMena(n, 'EUR');
+    const fmtVel = n => n.toLocaleString(loc(), { maximumFractionDigits: 1 });
+    const fmtPrumer = n => (n / Math.PI).toLocaleString(loc(), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const slug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const jednotne = s => JEDNOTNE_CISLO[s] || s;
+    const prelozSlovo = s => (PREKLADY_SLOV[s] && PREKLADY_SLOV[s][JAZYK]) || s;
+    const nazevKategorie = s => (PREKLADY_KATEGORII[s] && PREKLADY_KATEGORII[s][JAZYK]) || s;
+    function prelozSkupinu(s) {
+      return s.split('+').map((c, i) => {
+        const w = prelozSlovo(jednotne(c.trim()));
+        return i ? w.toLowerCase() : w;
+      }).join(' + ');
+    }
+
+    // ---------- Údaje provozovatele (podle jazyka) ----------
+    const doplnit = co => `<mark class="doplnit">DOPLNIT: ${co}</mark>`;
+    function hodnotyPoli(jazyk = JAZYK) {
+      const p = PROVOZOVATEL;
+      const en = jazyk !== 'cs';
+      const tj = k => (I18N[jazyk] && I18N[jazyk][k]) || I18N.cs[k];
+      let dicText;
+      if (p.dic) dicText = tj('pole.dic') + ' ' + esc(p.dic);
+      else if (p.platceDph === false) dicText = tj('pole.neplatce');
+      else dicText = doplnit('DIČ nebo „neplátce DPH“');
+      let dphText;
+      if (p.platceDph === true) dphText = en ? 'Prices include VAT.' : 'Ceny jsou uvedeny včetně daně z přidané hodnoty.';
+      else if (p.platceDph === false) dphText = en ? 'The Seller is not a VAT payer.' : 'Prodávající není plátcem DPH.';
+      else dphText = doplnit('plátce / neplátce DPH');
+      return {
+        JMENO: esc(p.jmeno),
+        ADRESA: p.adresa ? esc(p.adresa) : doplnit('adresa místa podnikání'),
+        ADRESA_VRACENI: esc(p.adresaVraceni || p.adresa) || doplnit('adresa pro vrácení zboží'),
+        ICO: esc(p.ico),
+        DIC_TEXT: dicText,
+        DPH_TEXT: dphText,
+        REJSTRIK: jazyk === 'cs' ? esc(p.rejstrik) : tj('pole.rejstrik'),
+        ZIVNOSTENSKY_URAD: p.zivnostenskyUrad ? esc(p.zivnostenskyUrad) : doplnit('příslušný živnostenský úřad'),
+        EMAIL: `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>`,
+        TELEFON: `<a href="tel:${esc(p.telefon.replace(/\s/g, ''))}">${esc(p.telefon)}</a>`,
+        WEB: esc(p.web),
+        UCET: esc(p.ucet),
+        IBAN: esc(p.iban),
+        HOSTING: esc(p.hosting)
+      };
+    }
+    function vyplnPole() {
+      const v = hodnotyPoli();
+      const mapa = { jmeno: v.JMENO, adresa: v.ADRESA, ico: v.ICO, dic: v.DIC_TEXT, rejstrik: v.REJSTRIK,
+        email: esc(PROVOZOVATEL.email), telefon: esc(PROVOZOVATEL.telefon) };
+      document.querySelectorAll('[data-pole]').forEach(el => {
+        const k = el.dataset.pole;
+        if (k in mapa) el.innerHTML = mapa[k];
+        if (el.tagName === 'A' && k === 'email') el.href = 'mailto:' + PROVOZOVATEL.email;
+        if (el.tagName === 'A' && k === 'telefon') el.href = 'tel:' + PROVOZOVATEL.telefon.replace(/\s/g, '');
+      });
+      const r = document.getElementById('rok');
+      if (r) r.textContent = new Date().getFullYear();
+    }
+
+    // =====================================================================
+    //  PŘEKLAD STATICKÝCH TEXTŮ A PŘEPÍNAČ JAZYKŮ
+    // =====================================================================
+    function prelozStranku() {
+      document.documentElement.lang = JAZYK;
+      document.title = t('meta.title');
+      document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+      document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+      document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.alt = t(el.dataset.i18nAlt); });
+      document.querySelectorAll('.lang-switch button').forEach(b => {
+        const aktivni = b.dataset.lang === JAZYK;
+        b.classList.toggle('active', aktivni);
+        b.setAttribute('aria-pressed', aktivni);
+      });
+      const jz = document.getElementById('form-jazyk');
+      if (jz) jz.value = JAZYKY[JAZYK];
+      nastavMenuAria();
+      vyplnPole();
+    }
+
+    function zmenJazyk(novy) {
+      if (!JAZYKY[novy] || novy === JAZYK) return;
+      JAZYK = novy;
+      try { localStorage.setItem('jazyk', novy); } catch (e) { }
+      const url = new URL(location.href);
+      if (url.searchParams.has('lang')) { url.searchParams.set('lang', novy); history.replaceState(null, '', url); }
+      prelozStranku();
+      if (captchaPoptavka.dataset.widget !== undefined) { captchaPoptavkaChyba.textContent = ''; pripravCaptchuPoptavky(); }
+      if (LISTY) vykresliKatalog(LISTY, true);
+      else naplnVyberKategorii([]);
+      // otevřený dokument / formulář přeložit
+      if (!docOverlay.hidden) {
+        if (otevrenyDokument) otevriDokument(otevrenyDokument);
+        else if (krokOdstoupeni === 1) formularOdstoupeni(odstoupeniData || {});
+        else if (krokOdstoupeni === 2) potvrzeniOdstoupeni();
+      }
+    }
+    document.querySelectorAll('.lang-switch button').forEach(b => b.addEventListener('click', () => zmenJazyk(b.dataset.lang)));
+
+    // =====================================================================
+    //  ANIMACE, NAVIGACE
+    // =====================================================================
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 50 ? '0 2px 20px rgba(44,26,20,0.1)' : '0 1px 20px rgba(44,26,20,0.06)';
+    });
+
+    function toggleCatalog(id, btnElement) {
+      const targetDiv = document.getElementById(id);
+      const rozbaleno = targetDiv.classList.toggle('expanded');
+      btnElement.textContent = t(rozbaleno ? 'katalog.mene' : 'katalog.vice');
+    }
+
+    // =====================================================================
+    //  KATALOG
+    // =====================================================================
+    let POLOZKY = [];
+    let KATEGORIE = [];
+    let LISTY = null;
+
+    // Zpracuje jeden list tabulky (pole řádků) na seznam položek
+    function zpracujList(nazevListu, radky) {
+      const hi = radky.findIndex(r => r && r.some(c => norm(c) === 'kod'));
+      if (hi < 0) return null;
+      const hlavicka = radky[hi].map(normKlic);
+      const sl = n => hlavicka.indexOf(n);
+      const S = {
+        kod: sl('kod'), kodWeb: sl('kodweb'), web: sl('web'),
+        czk: sl('cenaczk'), eur: sl('cenaeur'), vaha: sl('vaha'),
+        velikost: sl('velikost'), mnozstvi: sl('mnozstvi'),
+        nazev: sl('nazev'), popis: sl('popis'), vyrobce: sl('vyrobce'),
+        nazevJ: {}, popisJ: {}
+      };
+      Object.keys(JAZYKY).forEach(j => { S.nazevJ[j] = sl('nazev' + j); S.popisJ[j] = sl('popis' + j); });
+
+      // Kurz: buňka pod nápisem „kurz“, jinak číslo v 1. sloupci hlavičky
+      let kurz = null;
+      for (let i = 0; i <= hi && kurz === null; i++) {
+        const r = radky[i] || [];
+        const k = r.findIndex(c => norm(c) === 'kurz');
+        if (k >= 0) kurz = cislo((radky[i + 1] || [])[k]);
+      }
+      if (kurz === null) kurz = cislo(radky[hi][0]);
+
+      // 1. sloupec bez nadpisu slouží jako skupina (např. „Náušnice+Prsten“)
+      const pouzite = new Set([S.kod, S.kodWeb, S.web, S.czk, S.eur, S.vaha, S.velikost, S.mnozstvi, S.nazev, S.popis, S.vyrobce].filter(i => i >= 0));
+      const sloupecSkupiny = pouzite.has(0) ? -1 : 0;
+
+      const mapa = new Map();
+      let skupina = '';
+      for (let i = hi + 1; i < radky.length; i++) {
+        const r = radky[i] || [];
+        const val = idx => (idx >= 0 ? r[idx] : null);
+        const text = idx => (prazdne(val(idx)) ? '' : String(val(idx)).trim());
+        if (sloupecSkupiny === 0 && typeof r[0] === 'string' && !prazdne(r[0])) skupina = r[0].trim();
+
+        const kod = val(S.kod);
+        if (prazdne(kod)) continue;               // prázdné řádky, součty apod.
+        const kodStr = String(kod).trim();
+        const klic = skupina + '|' + kodStr;
+
+        let p = mapa.get(klic);
+        if (!p) {
+          p = {
+            kategorie: nazevListu, skupina, kod: kodStr, kodWeb: '', obrazek: '',
+            nazev: '', popis: '', nazvy: {}, popisy: {}, vyrobce: '', czk: null, eur: null, vaha: '',
+            velikosti: new Map(), skladem: 0
+          };
+          mapa.set(klic, p);
+        }
+        if (!p.kodWeb) p.kodWeb = text(S.kodWeb);
+        if (!p.obrazek && OBRAZEK_RE.test(text(S.web))) p.obrazek = text(S.web);
+        if (!p.nazev) p.nazev = text(S.nazev);
+        if (!p.popis) p.popis = text(S.popis);
+        Object.keys(JAZYKY).forEach(j => {
+          if (!p.nazvy[j]) p.nazvy[j] = text(S.nazevJ[j]);
+          if (!p.popisy[j]) p.popisy[j] = text(S.popisJ[j]);
+        });
+        if (!p.vyrobce) p.vyrobce = text(S.vyrobce);
+        if (p.czk === null) p.czk = cislo(val(S.czk));
+        if (p.eur === null) p.eur = cislo(val(S.eur));
+        if (!p.vaha && !prazdne(val(S.vaha))) p.vaha = val(S.vaha);
+
+        const ks = Math.max(0, cislo(val(S.mnozstvi)) ?? 0);
+        const vel = cislo(val(S.velikost));
+        if (vel !== null) p.velikosti.set(vel, (p.velikosti.get(vel) || 0) + ks);
+        p.skladem += ks;
+      }
+
+      const polozky = [...mapa.values()];
+      polozky.forEach(p => {
+        if (p.eur === null && p.czk !== null && kurz) p.eur = Math.ceil(p.czk / kurz / 5) * 5;
+        p.kodZobrazeny = p.kodWeb ? p.kodWeb.replace(OBRAZEK_RE, '') : p.kod;
+        p.jePrsten = p.velikosti.size > 0 || /prsten/i.test(nazevListu);
+      });
+      const kompletni = p => p.nazev && p.obrazek && p.czk !== null;
+      return { nazev: nazevListu, polozky: ZOBRAZOVAT_JEN_KOMPLETNI ? polozky.filter(kompletni) : polozky };
+    }
+
+    // Název položky v aktuálním jazyce
+    function titulek(p) {
+      if (p.nazvy[JAZYK]) return p.nazvy[JAZYK];
+      if (p.nazev) {
+        if (JAZYK === 'cs') return p.nazev;
+        // „Prsten MOTÝL“ → „Ring MOTÝL“ (přeloží se jen obecné slovo na začátku)
+        const m = p.nazev.match(/^(\S+)(\s+.*)?$/);
+        const slovo = Object.keys(PREKLADY_SLOV).find(s => norm(s) === norm(m[1]));
+        return slovo ? prelozSlovo(slovo) + (m[2] || '') : p.nazev;
+      }
+      return p.skupina ? prelozSkupinu(p.skupina) : prelozSlovo(jednotne(p.kategorie));
+    }
+    const popis = p => p.popisy[JAZYK] || p.popis;
+
+    function seznamVelikosti(p) {
+      const s = new Set();
+      for (let v = VELIKOSTI_PRSTENU.od; v <= VELIKOSTI_PRSTENU.do; v += VELIKOSTI_PRSTENU.krok) s.add(v);
+      p.velikosti.forEach((_, v) => s.add(v));
+      return [...s].sort((a, b) => a - b);
+    }
+
+    function textVaha(v) {
+      if (typeof v === 'number') return v.toLocaleString(loc()) + ' g';
+      let s = String(v).trim().replace(/(\d)\s*g$/i, '$1 g');
+      if (JAZYK === 'en') s = s.replace(/(\d),(\d)/g, '$1.$2');
+      return s;
+    }
+
+    // Dostupnost: u prstenu až po výběru velikosti, jinak hned
+    function stavSkladu(p, vel) {
+      if (p.jePrsten) {
+        if (vel === null || vel === undefined) return null;
+        return (p.velikosti.get(vel) || 0) > 0 ? { t: t('karta.ihned'), ok: true } : { t: t('karta.zakazka'), ok: false };
+      }
+      return p.skladem > 0 ? { t: t('karta.ihned'), ok: true } : { t: t('karta.zakazka'), ok: false };
+    }
+
+    function vybranaVelikost(i) {
+      const sel = document.getElementById('vel-' + i);
+      return sel && sel.value !== '' ? parseFloat(sel.value) : null;
+    }
+
+    function nastavStav(i) {
+      const p = POLOZKY[i];
+      const sel = document.getElementById('vel-' + i);
+      const vel = vybranaVelikost(i);
+      if (sel && vel !== null) sel.classList.remove('needs-size');
+      const s = stavSkladu(p, vel);
+      const el = document.getElementById('stav-' + i);
+      el.textContent = s ? s.t : '';
+      el.className = 'item-stock ' + (s ? (s.ok ? 'stock-in' : 'stock-out') : '');
+    }
+
+    function obrazekChybi(img) {
+      const p = POLOZKY[+img.dataset.i];
+      if (!ZOBRAZOVAT_JEN_KOMPLETNI || !p || !LISTY) { img.parentElement.textContent = t('karta.foto'); return; }
+      console.warn('Katalog: chybí obrázek ' + p.obrazek + ' – produkt ' + p.kod + ' se nezobrazí.');
+      LISTY.forEach(l => { l.polozky = l.polozky.filter(x => x !== p); });
+      LISTY = LISTY.filter(l => l.polozky.length);
+      vykresliKatalog(LISTY, true);
+    }
+
+    // Ověří, že obrázky z tabulky opravdu existují (stačí hlavička souboru, obrázek se nestahuje)
+    async function overObrazky(listy) {
+      const soubory = [...new Set(listy.flatMap(l => l.polozky.map(p => p.obrazek)).filter(Boolean))];
+      const existuji = new Set();
+      await Promise.all(soubory.map(async f => {
+        try {
+          const odp = await fetch(SLOZKA_OBRAZKU + encodeURIComponent(f), { method: 'HEAD' });
+          if (odp.ok) existuji.add(f);
+        } catch (e) { }
+      }));
+      listy.forEach(l => { l.polozky = l.polozky.filter(p => existuji.has(p.obrazek)); });
+    }
+
+    function kartaHTML(p, i, predchoziVel) {
+      const nazev = titulek(p);
+      const obrazek = p.obrazek
+        ? `<img src="${esc(SLOZKA_OBRAZKU + encodeURIComponent(p.obrazek))}" alt="${esc(nazev + ' ' + p.kodZobrazeny)}" loading="lazy" data-i="${i}" onerror="obrazekChybi(this)">`
+        : esc(t('karta.foto'));
+
+      let velikost = '';
+      if (p.jePrsten) {
+        const moznosti = seznamVelikosti(p).map(v => {
+          const ks = p.velikosti.get(v) || 0;
+          const vybrana = predchoziVel === v ? ' selected' : '';
+          return `<option value="${v}"${vybrana}>${fmtVel(v)} (Ø ${fmtPrumer(v)} mm) – ${esc(t(ks > 0 ? 'karta.ihned' : 'karta.zakazka'))}</option>`;
+        }).join('');
+        velikost = `
+          <div class="item-size">
+            <label for="vel-${i}">${esc(t('karta.velikost'))}</label>
+            <select id="vel-${i}" onchange="nastavStav(${i})">
+              <option value="">${esc(t('karta.vyberte'))}</option>${moznosti}
+            </select>
+            <span class="size-hint">${esc(t('karta.napoveda'))}</span>
+          </div>`;
+      }
+
+      // Čeština: hlavní cena v Kč, ostatní jazyky: hlavní cena v eurech
+      let cena;
+      if (p.czk === null) cena = `<div class="item-price">${esc(t('karta.naDotaz'))}</div>`;
+      else if (JAZYK === 'cs' || p.eur === null) cena = `<div class="item-price">${fmtKc(p.czk)}</div>${p.eur !== null ? `<div class="item-price-eur">${fmtEur(p.eur)}</div>` : ''}`;
+      else cena = `<div class="item-price">${fmtEur(p.eur)}</div><div class="item-price-eur">${fmtKc(p.czk)}</div>`;
+
+      const s = stavSkladu(p, predchoziVel ?? null);
+      const pop = popis(p);
+      return `
+        <div class="catalog-item">
+          <div class="catalog-image-box">${obrazek}</div>
+          <h3>${esc(nazev)}</h3>
+          <div class="item-code">${esc(t('karta.kod'))}: ${esc(p.kodZobrazeny)}</div>
+          ${pop ? `<p class="item-desc">${esc(pop)}</p>` : ''}
+          ${p.vaha ? `<div class="item-weight">${esc(t('karta.vaha'))}: ${esc(textVaha(p.vaha))}</div>` : ''}
+          ${p.vyrobce ? `<div class="item-maker">${esc(t('karta.vyrobce'))}: ${esc(p.vyrobce)}</div>` : ''}
+          ${velikost}
+          <div class="item-footer">
+            <div class="item-price-wrap">${cena}</div>
+            <button type="button" class="cart-icon" onclick="koupitSperk(${i})" title="${esc(t('karta.kosik'))}" aria-label="${esc(t('karta.kosik') + ': ' + nazev + ' ' + p.kodZobrazeny)}">
+              <img src="kosik.png" alt="">
+            </button>
+          </div>
+          <div class="item-stock ${s ? (s.ok ? 'stock-in' : 'stock-out') : ''}" id="stav-${i}" aria-live="polite">${s ? esc(s.t) : ''}</div>
+        </div>`;
+    }
+
+    function naplnVyberKategorii(listy) {
+      const sel = document.getElementById('kategorie-select');
+      if (!sel) return;
+      const puvodni = sel.value;
+      const kategorie = listy.length ? listy.map(l => l.nazev) : ['Náušnice', 'Prsteny', 'Náhrdelníky', 'Náramky'];
+      sel.innerHTML = `<option value="Nevybráno">${esc(t('form.vyberte'))}</option>` +
+        kategorie.map(n => `<option value="${esc(n)}">${esc(nazevKategorie(n))}</option>`).join('') +
+        Object.entries(SLUZBY_VE_FORMULARI).map(([v, k]) => `<option value="${esc(v)}">${esc(t(k))}</option>`).join('');
+      if ([...sel.options].some(o => o.value === puvodni)) sel.value = puvodni;
+    }
+
+    function vykresliKatalog(listy, zachovat = false) {
+      const obsah = document.getElementById('katalog-obsah');
+      // při změně jazyka zachovat otevřenou kategorii, rozbalení a vybrané velikosti
+      const stare = {};
+      let aktivni = null;
+      const rozbalene = new Set();
+      if (zachovat) {
+        POLOZKY.forEach((p, i) => { const v = vybranaVelikost(i); if (v !== null) stare[p.kategorie + '|' + p.skupina + '|' + p.kod] = v; });
+        const a = document.querySelector('.catalog-tab[aria-selected="true"]');
+        if (a) aktivni = a.dataset.slug;
+        document.querySelectorAll('.catalog-hidden-items.expanded').forEach(d => rozbalene.add(d.id));
+      }
+      POLOZKY = [];
+      KATEGORIE = [];
+      if (!listy.length) {
+        obsah.innerHTML = `<p class="catalog-status">${esc(t('katalog.prazdny'))}</p>`;
+        naplnVyberKategorii(listy);
+        return;
+      }
+
+      let zalozky = '';
+      let panely = '';
+      listy.forEach((list, k) => {
+        const s = slug(list.nazev);
+        const nazev = nazevKategorie(list.nazev);
+        KATEGORIE.push({ slug: s, nazev });
+        const id = 'hidden-' + s;
+        const karty = list.polozky.map(p => {
+          POLOZKY.push(p);
+          return kartaHTML(p, POLOZKY.length - 1, stare[p.kategorie + '|' + p.skupina + '|' + p.kod]);
+        });
+        const viditelne = karty.slice(0, VIDITELNYCH_POLOZEK).join('');
+        const skryte = karty.slice(VIDITELNYCH_POLOZEK).join('');
+        const platnaAktivni = aktivni && listy.some(l => slug(l.nazev) === aktivni) ? aktivni : null;
+        const jeAktivni = platnaAktivni ? platnaAktivni === s : k === 0;
+
+        zalozky += `
+        <button class="catalog-tab" role="tab" id="tab-${s}" aria-controls="panel-${s}"
+          aria-selected="${jeAktivni}" tabindex="${jeAktivni ? 0 : -1}" data-slug="${s}">${esc(nazev)}</button>`;
+        panely += `
+      <div class="catalog-panel" role="tabpanel" id="panel-${s}" aria-labelledby="tab-${s}"${jeAktivni ? '' : ' hidden'}>
+        <div class="catalog-grid">${viditelne}</div>
+        ${skryte ? `
+        <div class="catalog-hidden-items${rozbalene.has(id) ? ' expanded' : ''}" id="${id}">${skryte}</div>
+        <div class="catalog-toggle-wrap">
+          <button class="btn btn-secondary" onclick="toggleCatalog('${id}', this)">${esc(t(rozbalene.has(id) ? 'katalog.mene' : 'katalog.vice'))}</button>
+        </div>` : ''}
+      </div>`;
+      });
+
+      obsah.innerHTML = `<div class="catalog-tabs" role="tablist" aria-label="${esc(t('katalog.kategorieAria'))}">${zalozky}
+      </div>${panely}`;
+
+      // Kliknutí a ovládání šipkami na kartách
+      const tabs = [...obsah.querySelectorAll('.catalog-tab')];
+      tabs.forEach((tb, i) => {
+        tb.addEventListener('click', () => otevriKategorii(tb.dataset.slug, { aktualizovatAdresu: true }));
+        tb.addEventListener('keydown', e => {
+          let j = null;
+          if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+          if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+          if (e.key === 'Home') j = 0;
+          if (e.key === 'End') j = tabs.length - 1;
+          if (j === null) return;
+          e.preventDefault();
+          tabs[j].focus();
+          otevriKategorii(tabs[j].dataset.slug, { aktualizovatAdresu: true });
+        });
+      });
+
+      // Rozbalovací menu v navigaci
+      document.getElementById('nav-submenu').innerHTML = KATEGORIE.map(c =>
+        `<li><a href="#produkty-${c.slug}">${esc(c.nazev)}</a></li>`).join('');
+
+      naplnVyberKategorii(listy);
+
+      // Odkaz z adresy (např. …/#produkty-prsteny)
+      if (!zachovat) {
+        const zAdresy = slugZAdresy();
+        if (zAdresy) otevriKategorii(zAdresy, { posunout: true, animace: false });
+      }
+    }
+
+    function slugZAdresy() {
+      const m = decodeURIComponent(location.hash).match(/^#produkty-(.+)$/);
+      return m && KATEGORIE.some(c => c.slug === m[1]) ? m[1] : null;
+    }
+
+    // Otevře kartu kategorie; volitelně posune stránku na katalog a upraví adresu
+    function otevriKategorii(s, { posunout = false, aktualizovatAdresu = false, animace = true } = {}) {
+      const tab = document.getElementById('tab-' + s);
+      if (!tab) return;
+      document.querySelectorAll('.catalog-tab').forEach(tb => {
+        const aktivni = tb === tab;
+        tb.setAttribute('aria-selected', aktivni);
+        tb.tabIndex = aktivni ? 0 : -1;
+      });
+      document.querySelectorAll('.catalog-panel').forEach(p => {
+        const aktivni = p.id === 'panel-' + s;
+        p.hidden = !aktivni;
+        p.classList.toggle('prave-otevreno', aktivni && animace);
+      });
+      // na mobilu dorolovat aktivní kartu do viditelné části lišty
+      const pas = tab.parentElement;
+      if (tab.offsetLeft < pas.scrollLeft) pas.scrollLeft = tab.offsetLeft - 16;
+      else if (tab.offsetLeft + tab.offsetWidth > pas.scrollLeft + pas.clientWidth) pas.scrollLeft = tab.offsetLeft + tab.offsetWidth - pas.clientWidth + 16;
+
+      if (aktualizovatAdresu) history.replaceState(null, '', location.pathname + location.search + '#produkty-' + s);
+
+      const katalog = document.getElementById('produkty');
+      katalog.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+      const lista = document.querySelector('.catalog-tabs');
+      // Když je uživatel hluboko v kategorii (lišta je přilepená), vrátíme ho na začátek nové kategorie
+      const listaPrilepena = lista && lista.getBoundingClientRect().top <= 65 &&
+        document.getElementById('katalog-obsah').getBoundingClientRect().top < 0;
+      if (posunout || listaPrilepena) {
+        const cil = posunout ? document.getElementById('produkty') : document.getElementById('panel-' + s);
+        cil.scrollIntoView({ behavior: posunout ? 'smooth' : 'auto', block: 'start' });
+      }
+    }
+
+    // Kliknutí na kategorii v menu
+    document.getElementById('nav-submenu').addEventListener('click', e => {
+      const a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      const s = a.getAttribute('href').replace('#produkty-', '');
+      history.replaceState(null, '', location.pathname + location.search + '#produkty-' + s);
+      otevriKategorii(s, { posunout: true });
+      a.blur();
+      document.querySelector('.nav-dropdown').classList.remove('open');
+    });
+
+    // Dotyková zařízení: první klepnutí na „Produkty“ jen otevře menu
+    document.querySelector('.nav-dropdown > a').addEventListener('click', e => {
+      const dd = e.currentTarget.parentElement;
+      if (window.matchMedia('(hover: none)').matches && window.innerWidth > 768 && !dd.classList.contains('open') && KATEGORIE.length) {
+        e.preventDefault();
+        dd.classList.add('open');
+      }
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) document.querySelector('.nav-dropdown').classList.remove('open');
+    });
+
+    async function nactiKatalog() {
+      const obsah = document.getElementById('katalog-obsah');
+      try {
+        if (typeof XLSX === 'undefined') throw new Error('Knihovna pro čtení tabulky (SheetJS) se nenačetla.');
+        // ?v=… a no-store zajistí, že se vždy načte aktuální verze tabulky
+        const odp = await fetch(SOUBOR_TABULKY + '?v=' + Date.now(), { cache: 'no-store' });
+        if (!odp.ok) throw new Error('Tabulku ' + SOUBOR_TABULKY + ' se nepodařilo stáhnout (HTTP ' + odp.status + ').');
+        const wb = XLSX.read(await odp.arrayBuffer(), { type: 'array' });
+        const infoListu = (wb.Workbook && wb.Workbook.Sheets) || [];
+        LISTY = wb.SheetNames
+          .filter((n, i) => !(infoListu[i] && infoListu[i].Hidden))   // skrytý list = skrytá kategorie
+          .map(n => zpracujList(n.trim(), XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, raw: true, defval: null })))
+          .filter(l => l && l.polozky.length);
+        if (ZOBRAZOVAT_JEN_KOMPLETNI) {
+          await overObrazky(LISTY);
+          LISTY = LISTY.filter(l => l.polozky.length);
+        }
+        vykresliKatalog(LISTY);
+      } catch (e) {
+        console.error('Katalog:', e.message || e);
+        if (location.protocol === 'file:') {
+          console.warn('Stránka je otevřená přímo ze souboru. Tabulku prohlížeč načte jen přes webový server (např. Live Server ve VS Code nebo po nahrání na hosting).');
+        }
+        obsah.innerHTML = `<p class="catalog-status">${esc(t('katalog.chyba'))}</p>`;
+      }
+    }
+
+    // =====================================================================
+    //  POPTÁVKA (košík)
+    // =====================================================================
+    let pendingPolozka = null;   // { p, vel }
+    let pendingItemText = null;
+
+    // Krok 1: Otevřít první okno (Množství)
+    function koupitSperk(i) {
+      const p = POLOZKY[i];
+      if (!p) return;
+      let vel = null;
+      if (p.jePrsten) {
+        const sel = document.getElementById('vel-' + i);
+        if (!sel || sel.value === '') {
+          sel.classList.add('needs-size');
+          sel.focus();
+          const el = document.getElementById('stav-' + i);
+          el.textContent = t('karta.nejdrive');
+          el.className = 'item-stock stock-out';
+          return;
+        }
+        vel = parseFloat(sel.value);
+      }
+      pendingPolozka = { p, vel };
+
+      document.getElementById('qtyItemLabel').textContent =
+        `${titulek(p)} ${p.kodZobrazeny}` + (vel !== null ? ', ' + t('mnozstvi.velikost', { v: fmtVel(vel) }) : '');
+      document.getElementById('qtyInput').value = '1';
+
+      document.getElementById('customModal').style.display = 'flex';
+      document.getElementById('qtyBox').style.display = 'block';
+      document.getElementById('actionBox').style.display = 'none';
+      document.getElementById('qtyInput').focus();
+    }
+
+    // Zavření okna bez uložení
+    function zavritModal() {
+      document.getElementById('customModal').style.display = 'none';
+      pendingPolozka = null;
+      pendingItemText = null;
+    }
+
+    // Text řádku do poptávky
+    function textPoptavky(qty) {
+      const { p, vel } = pendingPolozka;
+      const skladem = p.jePrsten ? (p.velikosti.get(vel) || 0) : p.skladem;
+      let dostupnost;
+      if (qty <= skladem) dostupnost = t('poptavka.ihned');
+      else if (skladem > 0) dostupnost = t('poptavka.cast', { a: skladem, b: qty - skladem });
+      else dostupnost = t('poptavka.zakazka');
+      const casti = [
+        `${qty}× ${titulek(p)}`,
+        nazevKategorie(p.kategorie),
+        `${t('poptavka.kod')} ${p.kodZobrazeny}`
+      ];
+      if (vel !== null) casti.push(`${t('poptavka.vel')} ${fmtVel(vel)}`);
+      if (p.czk === null) casti.push(t('poptavka.naDotaz'));
+      else casti.push(`${fmtKc(p.czk)}${p.eur !== null ? ' (' + fmtEur(p.eur) + ')' : ''}/${t('poptavka.ks')}`);
+      casti.push(dostupnost);
+      return casti.join(' – ');
+    }
+
+    // Krok 2: Potvrdit množství v prvním okně
+    document.getElementById('btn-confirm-qty').addEventListener('click', () => {
+      const qty = document.getElementById('qtyInput').value.trim();
+      if (!/^\d+$/.test(qty) || parseInt(qty) <= 0) {
+        alert(t('mnozstvi.chyba'));
+        return;
+      }
+      pendingItemText = textPoptavky(parseInt(qty));
+
+      // Předvyplnit kategorii ve formuláři
+      const sel = document.getElementById('kategorie-select');
+      if (sel && [...sel.options].some(o => o.value === pendingPolozka.p.kategorie)) sel.value = pendingPolozka.p.kategorie;
+
+      const textarea = document.getElementById('zprava-textarea');
+      if (textarea.value.trim().length > 0) {
+        document.getElementById('qtyBox').style.display = 'none';
+        document.getElementById('actionBox').style.display = 'block';
+      } else {
+        vlozitDoZpravy('new');
+      }
+    });
+
+    // Potvrzení množství i klávesou Enter
+    document.getElementById('qtyInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') document.getElementById('btn-confirm-qty').click();
+    });
+
+    // Krok 3: Vložení do formuláře podle výběru uživatele
+    function vlozitDoZpravy(akce) {
+      const textarea = document.getElementById('zprava-textarea');
+      if (akce === 'new' || akce === 'overwrite') {
+        textarea.value = `${t('poptavka.uvod')}\n${pendingItemText}\n\n`;
+      } else if (akce === 'add') {
+        textarea.value = textarea.value.trim() + `\n${pendingItemText}\n\n`;
+      }
+      zavritModal();
+      document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => { textarea.focus(); }, 700);
+    }
+    document.getElementById('btn-add').addEventListener('click', () => vlozitDoZpravy('add'));
+    document.getElementById('btn-overwrite').addEventListener('click', () => vlozitDoZpravy('overwrite'));
+
+    // =====================================================================
+    //  DOKUMENTY (obchodní podmínky apod.)
+    // =====================================================================
+    const SLOZKA_DOKUMENTU = { cs: 'dokumenty/', en: 'dokumenty/en/' };
+    const DOKUMENTY = {
+      'obchodni-podminky':      { cs: 'Obchodní podmínky', en: 'Terms and Conditions' },
+      'reklamacni-rad':         { cs: 'Reklamační řád', en: 'Complaints Procedure' },
+      'odstoupeni-od-smlouvy':  { cs: 'Odstoupení od smlouvy', en: 'Withdrawal from the Contract' },
+      'ochrana-osobnich-udaju': { cs: 'Zásady zpracování osobních údajů', en: 'Privacy Policy' },
+      'cookies':                { cs: 'Informace o cookies', en: 'Cookie Policy' }
+    };
+
+    // Jednoduchý převod Markdownu na HTML
+    function inline(tx) {
+      const ochrana = [];
+      tx = tx.replace(/\\([*_\\[\]()#|-])/g, (m, c) => { ochrana.push(c); return `\u0000${ochrana.length - 1}\u0000`; });
+      tx = esc(tx)
+        .replace(/\{\{(.+?)\}\}/g, '<mark class="doplnit">$1</mark>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, url) => {
+          const ext = /^https?:/i.test(url);
+          return `<a href="${url}"${ext ? ' target="_blank" rel="noopener"' : ''}>${txt}</a>`;
+        });
+      return tx.replace(/\u0000(\d+)\u0000/g, (m, i) => esc(ochrana[i]));
+    }
+    function markdownNaHtml(md) {
+      const radky = md.replace(/\r/g, '').split('\n');
+      let html = '', i = 0;
+      const jeSpecialni = r => /^(#{1,3}\s|[-*]\s|\d+\.\s|\||>\s?|---\s*$)/.test(r);
+      while (i < radky.length) {
+        const r = radky[i];
+        if (!r.trim()) { i++; continue; }
+        let m;
+        if ((m = r.match(/^(#{1,3})\s+(.*)$/))) {
+          const n = m[1].length; html += `<h${n}${n === 1 ? ' id="docTitle"' : ''}>${inline(m[2])}</h${n}>`; i++;
+        } else if (/^---\s*$/.test(r)) {
+          html += '<hr>'; i++;
+        } else if (/^\|/.test(r)) {
+          const tab = [];
+          while (i < radky.length && /^\|/.test(radky[i])) tab.push(radky[i++]);
+          const bunky = s => s.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+          const telo = tab.filter(s => !/^\|[\s:|-]+\|?\s*$/.test(s));
+          html += '<div class="table-wrap"><table><thead><tr>' + bunky(telo[0]).map(c => `<th>${inline(c)}</th>`).join('') +
+            '</tr></thead><tbody>' + telo.slice(1).map(s => '<tr>' + bunky(s).map(c => `<td>${inline(c)}</td>`).join('') + '</tr>').join('') +
+            '</tbody></table></div>';
+        } else if (/^[-*]\s/.test(r)) {
+          html += '<ul>';
+          while (i < radky.length && /^[-*]\s/.test(radky[i])) html += `<li>${inline(radky[i++].replace(/^[-*]\s+/, ''))}</li>`;
+          html += '</ul>';
+        } else if ((m = r.match(/^(\d+)\.\s/))) {
+          html += `<ol start="${m[1]}">`;
+          while (i < radky.length && /^\d+\.\s/.test(radky[i])) html += `<li>${inline(radky[i++].replace(/^\d+\.\s+/, ''))}</li>`;
+          html += '</ol>';
+        } else if (/^>/.test(r)) {
+          const b = [];
+          while (i < radky.length && /^>/.test(radky[i])) b.push(radky[i++].replace(/^>\s?/, ''));
+          html += `<blockquote>${inline(b.join(' '))}</blockquote>`;
+        } else {
+          const p = [];
+          while (i < radky.length && radky[i].trim() && !jeSpecialni(radky[i])) p.push(inline(radky[i++]));
+          html += `<p>${p.join('<br>')}</p>`;
+        }
+      }
+      return html;
+    }
+
+    const docOverlay = document.getElementById('docOverlay');
+    const docBody = document.getElementById('docBody');
+    let fokusPredOtevrenim = null;
+    let otevrenyDokument = null;
+    let krokOdstoupeni = 0;
+
+    function otevriOkno(html, tisk = true) {
+      if (docOverlay.hidden) fokusPredOtevrenim = document.activeElement;
+      docBody.innerHTML = html;
+      document.getElementById('docPrint').hidden = !tisk;
+      docOverlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+      docBody.scrollTop = 0;
+      docBody.focus();
+    }
+    function zavriOkno() {
+      docOverlay.hidden = true;
+      otevrenyDokument = null;
+      krokOdstoupeni = 0;
+      document.body.style.overflow = '';
+      if (/^#(dokument-|odstoupit)/.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
+      if (fokusPredOtevrenim) fokusPredOtevrenim.focus();
+    }
+    document.getElementById('docClose').addEventListener('click', zavriOkno);
+    docOverlay.addEventListener('click', e => { if (e.target === docOverlay) zavriOkno(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !docOverlay.hidden) zavriOkno(); });
+    document.getElementById('docPrint').addEventListener('click', () => {
+      document.body.classList.add('tisk-dokumentu');
+      window.print();
+      setTimeout(() => document.body.classList.remove('tisk-dokumentu'), 500);
+    });
+
+    async function otevriDokument(id) {
+      if (!DOKUMENTY[id]) return;
+      otevrenyDokument = id;
+      krokOdstoupeni = 0;
+      const jd = jazykDokumentu();
+      const poznamka = t('dok.poznamka') ? `<p class="doc-note">${esc(t('dok.poznamka'))}</p>` : '';
+      otevriOkno(`${poznamka}<h1 id="docTitle">${esc(DOKUMENTY[id][jd])}</h1><p class="doc-status">${esc(t('dok.nacitam'))}</p>`);
+      try {
+        const odp = await fetch(SLOZKA_DOKUMENTU[jd] + id + '.md?v=' + Date.now(), { cache: 'no-store' });
+        if (!odp.ok) throw new Error('HTTP ' + odp.status);
+        const v = hodnotyPoli(jd);
+        let html = markdownNaHtml(await odp.text());
+        html = html.replace(/%([A-Z_]+)%/g, (m, k) => (k in v ? v[k] : m));
+        if (otevrenyDokument === id) docBody.innerHTML = poznamka + html;
+      } catch (e) {
+        console.error('Dokument:', e);
+        const mail = `<a href="mailto:${esc(PROVOZOVATEL.email)}">${esc(PROVOZOVATEL.email)}</a>`;
+        docBody.innerHTML = `<h1 id="docTitle">${esc(DOKUMENTY[id][jd])}</h1><p>${t('dok.chyba', { email: mail })}</p>`;
+      }
+    }
+
+    // =====================================================================
+    //  ODSTOUPENÍ OD SMLOUVY (tlačítko podle § 1830a OZ)
+    // =====================================================================
+    let odstoupeniData = null;
+
+    function formularOdstoupeni(d = {}) {
+      otevrenyDokument = null;
+      krokOdstoupeni = 1;
+      const nep = `<span class="optional">${esc(t('odst.nepovinne'))}</span>`;
+      otevriOkno(`
+        <h1 id="docTitle">${esc(t('odst.nadpis'))}</h1>
+        <p>${t('odst.uvod')}</p>
+        <form class="withdraw-form" id="withdrawForm" novalidate>
+          <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="form-group">
+            <label for="wd-jmeno">${esc(t('odst.jmeno'))}</label>
+            <input id="wd-jmeno" name="jmeno" required autocomplete="name" value="${esc(d.jmeno || '')}">
+          </div>
+          <div class="form-group">
+            <label for="wd-email">${esc(t('odst.email'))}</label>
+            <input id="wd-email" name="email" type="email" required autocomplete="email" value="${esc(d.email || '')}">
+          </div>
+          <div class="form-group">
+            <label for="wd-zbozi">${esc(t('odst.zbozi'))}</label>
+            <textarea id="wd-zbozi" name="zbozi" required style="min-height:80px">${esc(d.zbozi || '')}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="wd-datum">${esc(t('odst.datum'))} ${nep}</label>
+            <input id="wd-datum" name="datum" value="${esc(d.datum || '')}" placeholder="${esc(t('odst.datumPh'))}">
+          </div>
+          <div class="form-group">
+            <label for="wd-ucet">${esc(t('odst.ucet'))} ${nep}</label>
+            <input id="wd-ucet" name="ucet" value="${esc(d.ucet || '')}">
+          </div>
+          <p class="form-error" id="wd-chyba" role="alert"></p>
+          <div class="withdraw-actions">
+            <button type="submit" class="btn btn-primary">${esc(t('odst.pokracovat'))}</button>
+          </div>
+        </form>`, false);
+
+      document.getElementById('withdrawForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target));
+        if (data.botcheck) return;
+        if (!data.jmeno.trim() || !/^\S+@\S+\.\S+$/.test(data.email.trim()) || !data.zbozi.trim()) {
+          document.getElementById('wd-chyba').textContent = t('odst.chyba');
+          return;
+        }
+        odstoupeniData = data;
+        potvrzeniOdstoupeni();
+      });
+    }
+
+    function souhrnOdstoupeni(d) {
+      return `<dl class="withdraw-summary">
+        <dt>${esc(t('odst.sJmeno'))}</dt><dd>${esc(d.jmeno)}</dd>
+        <dt>${esc(t('odst.sEmail'))}</dt><dd>${esc(d.email)}</dd>
+        <dt>${esc(t('odst.sZbozi'))}</dt><dd>${esc(d.zbozi)}</dd>
+        ${d.datum ? `<dt>${esc(t('odst.sDatum'))}</dt><dd>${esc(d.datum)}</dd>` : ''}
+        ${d.ucet ? `<dt>${esc(t('odst.sUcet'))}</dt><dd>${esc(d.ucet)}</dd>` : ''}
+        ${d.odeslano ? `<dt>${esc(t('odst.sPrijato'))}</dt><dd>${esc(d.odeslano)}</dd>` : ''}
+      </dl>`;
+    }
+
+    function potvrzeniOdstoupeni() {
+      krokOdstoupeni = 2;
+      const d = odstoupeniData;
+      otevriOkno(`
+        <h1 id="docTitle">${esc(t('odst.nadpis2'))}</h1>
+        <p>${esc(t('odst.text2'))}</p>
+        ${souhrnOdstoupeni(d)}
+        <div class="captcha-box" id="captcha-odstoupeni"></div>
+        <p class="form-error" id="wd-chyba" role="alert"></p>
+        <div class="withdraw-actions">
+          <button type="button" class="btn btn-primary" id="wd-potvrdit">${esc(t('odst.potvrdit'))}</button>
+          <button type="button" class="btn btn-secondary" id="wd-zpet">${esc(t('odst.upravit'))}</button>
+        </div>`, false);
+      document.getElementById('wd-zpet').addEventListener('click', () => formularOdstoupeni(d));
+      document.getElementById('wd-potvrdit').addEventListener('click', odeslatOdstoupeni);
+      const chyba = document.getElementById('wd-chyba');
+      vykresliCaptchu(document.getElementById('captcha-odstoupeni'), () => { chyba.textContent = ''; })
+        .catch(() => zobrazChybuCaptchy(chyba, true));
+    }
+
+    async function odeslatOdstoupeni() {
+      const d = odstoupeniData;
+      const btn = document.getElementById('wd-potvrdit');
+      const captcha = odpovedCaptchy(document.getElementById('captcha-odstoupeni'));
+      if (!captcha) {
+        zobrazChybuCaptchy(document.getElementById('wd-chyba'), !window.hcaptcha);
+        return;
+      }
+      btn.disabled = true; btn.textContent = t('odst.odesilam');
+      const ted = new Date();
+      d.odeslano = ted.toLocaleDateString(loc(), { day: 'numeric', month: 'long', year: 'numeric' }) + ' ' + t('odst.casSpojka') + ' ' +
+        ted.toLocaleTimeString(loc(), { hour: '2-digit', minute: '2-digit' });
+      try {
+        const klic = document.querySelector('#poptavkovy-formular [name="access_key"]').value;
+        const odp = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: klic,
+            'h-captcha-response': captcha,
+            subject: 'ODSTOUPENÍ OD SMLOUVY – ' + d.jmeno,
+            from_name: 'Web – odstoupení od smlouvy',
+            replyto: d.email,
+            'Jméno': d.jmeno, 'E-mail': d.email, 'Zboží': d.zbozi,
+            'Datum objednání / převzetí': d.datum || '—', 'Číslo účtu': d.ucet || '—',
+            'Odstoupení odesláno': ted.toLocaleString('cs-CZ'),
+            'Jazyk zákazníka': JAZYKY[JAZYK],
+            'Upozornění': 'Zákazníkovi je nutné bez zbytečného odkladu potvrdit přijetí odstoupení e-mailem.'
+          })
+        });
+        const v = await odp.json();
+        if (!v.success) throw new Error(v.message || 'Odeslání se nezdařilo');
+        krokOdstoupeni = 3;
+        otevriOkno(`
+          <h1 id="docTitle">${esc(t('odst.nadpis3'))}</h1>
+          <p>${esc(t('odst.text3', { datum: d.odeslano, email: d.email }))}</p>
+          ${souhrnOdstoupeni(d)}
+          <p>${t('odst.vratit', { adresa: hodnotyPoli().ADRESA_VRACENI })}</p>`, true);
+        odstoupeniData = null;
+      } catch (e) {
+        console.error('Odstoupení:', e);
+        d.odeslano = '';
+        btn.disabled = false; btn.textContent = t('odst.potvrdit');
+        try { window.hcaptcha.reset(document.getElementById('captcha-odstoupeni').dataset.widget); } catch (err) { }
+        const mail = `<a href="mailto:${esc(PROVOZOVATEL.email)}">${esc(PROVOZOVATEL.email)}</a>`;
+        document.getElementById('wd-chyba').innerHTML = t('odst.chybaOdeslani', { email: mail });
+      }
+    }
+
+    // =====================================================================
+    //  hCAPTCHA – ochrana obou formulářů proti spamu (přes Web3Forms)
+    //  Načte se až ve chvíli, kdy návštěvník začne vyplňovat formulář.
+    //  V administraci Web3Forms musí být u formuláře zapnutá hCaptcha.
+    // =====================================================================
+    const HCAPTCHA_SITEKEY = '50b2fe65-b00b-4b9e-ad62-3ba471098be2';   // veřejný klíč Web3Forms pro bezplatný tarif
+    let hcaptchaSlib = null;
+
+    function nactiHcaptchu() {
+      if (hcaptchaSlib) return hcaptchaSlib;
+      hcaptchaSlib = new Promise((resolve, reject) => {
+        window.hcaptchaPripravena = () => resolve(window.hcaptcha);
+        const s = document.createElement('script');
+        s.src = 'https://js.hcaptcha.com/1/api.js?render=explicit&recaptchacompat=off&onload=hcaptchaPripravena&hl=' + JAZYK;
+        s.async = true;
+        s.onerror = () => { hcaptchaSlib = null; s.remove(); reject(new Error('hCaptcha se nenačetla')); };
+        document.head.appendChild(s);
+      });
+      return hcaptchaSlib;
+    }
+
+    async function vykresliCaptchu(el, poOvereni) {
+      const hc = await nactiHcaptchu();
+      if (!el.isConnected) return null;
+      if (el.dataset.widget !== undefined) {
+        if (el.dataset.jazyk === JAZYK) return el.dataset.widget;
+        try { hc.remove(el.dataset.widget); } catch (e) { }
+        el.innerHTML = '';
+      }
+      const id = hc.render(el, { sitekey: HCAPTCHA_SITEKEY, hl: JAZYK, callback: poOvereni || (() => { }) });
+      el.dataset.widget = id;
+      el.dataset.jazyk = JAZYK;
+      return id;
+    }
+
+    function odpovedCaptchy(el) {
+      if (!el || !window.hcaptcha || el.dataset.widget === undefined) return '';
+      try { return window.hcaptcha.getResponse(el.dataset.widget) || ''; } catch (e) { return ''; }
+    }
+
+    function zobrazChybuCaptchy(elChyba, nelzeNacist) {
+      const mail = `<a href="mailto:${esc(PROVOZOVATEL.email)}">${esc(PROVOZOVATEL.email)}</a>`;
+      elChyba.innerHTML = nelzeNacist ? t('captcha.nelze', { email: mail }) : esc(t('captcha.chyba'));
+    }
+
+    // Poptávkový formulář
+    const formPoptavka = document.getElementById('poptavkovy-formular');
+    const captchaPoptavka = document.getElementById('captcha-poptavka');
+    const captchaPoptavkaChyba = document.getElementById('captcha-chyba');
+    function pripravCaptchuPoptavky() {
+      return vykresliCaptchu(captchaPoptavka, () => { captchaPoptavkaChyba.textContent = ''; })
+        .catch(() => zobrazChybuCaptchy(captchaPoptavkaChyba, true));
+    }
+    formPoptavka.addEventListener('focusin', pripravCaptchuPoptavky);
+    formPoptavka.addEventListener('submit', e => {
+      if (formPoptavka.querySelector('[name="botcheck"]').checked) { e.preventDefault(); return; }
+      if (!odpovedCaptchy(captchaPoptavka)) {
+        e.preventDefault();
+        zobrazChybuCaptchy(captchaPoptavkaChyba, false);
+        pripravCaptchuPoptavky();
+      }
+    });
+
+    // ---------- Směrování podle adresy (#produkty-…, #dokument-…, #odstoupit) ----------
+    function zpracujAdresu() {
+      const h = decodeURIComponent(location.hash);
+      let m;
+      if ((m = h.match(/^#dokument-(.+)$/))) { otevriDokument(m[1]); return; }
+      if (h === '#odstoupit') { formularOdstoupeni(); return; }
+      const s = slugZAdresy();
+      if (s) otevriKategorii(s, { posunout: true });
+    }
+    window.addEventListener('hashchange', zpracujAdresu);
+
+    // =====================================================================
+    //  COOKIE LIŠTA
+    // =====================================================================
+    const cookieBar = document.getElementById('cookieBar');
+    const pouzivaCookiesSeSouhlasem = !!window.GA_ID || VZDY_ZOBRAZIT_COOKIE_LISTU;
+
+    function nactiSouhlas() {
+      try {
+        const s = JSON.parse(localStorage.getItem('cookie-souhlas'));
+        if (!s || Date.now() - s.cas > PLATNOST_SOUHLASU_DNI * 864e5) return null;
+        return s;
+      } catch (e) { return null; }
+    }
+    // Smaže cookies Google Analytics (_ga, _ga_…) po odvolání souhlasu
+    function smazCookiesAnalytiky() {
+      const domeny = ['', location.hostname, '.' + location.hostname, '.' + location.hostname.replace(/^www\./, '')];
+      document.cookie.split(';').map(c => c.split('=')[0].trim()).filter(n => /^_ga/.test(n)).forEach(n => {
+        domeny.forEach(d => { document.cookie = n + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : ''); });
+      });
+    }
+    function ulozSouhlas(analytika) {
+      try { localStorage.setItem('cookie-souhlas', JSON.stringify({ analytika, cas: Date.now() })); } catch (e) { }
+      cookieBar.hidden = true;
+      if (analytika) {
+        window.spustAnalytiku();
+      } else {
+        gtag('consent', 'update', { analytics_storage: 'denied' });
+        smazCookiesAnalytiky();
+      }
+    }
+    if (pouzivaCookiesSeSouhlasem) {
+      document.getElementById('cookie-nastaveni-polozka').hidden = false;
+      if (!nactiSouhlas()) cookieBar.hidden = false;
+    }
+    document.getElementById('cookieAccept').addEventListener('click', () => ulozSouhlas(true));
+    document.getElementById('cookieReject').addEventListener('click', () => ulozSouhlas(false));
+    document.getElementById('cookie-nastaveni').addEventListener('click', () => { cookieBar.hidden = false; });
+
+    // =====================================================================
+    //  MOBILNÍ MENU
+    // =====================================================================
+    const navToggle = document.querySelector('.nav-toggle');
+    function nastavMenuAria() {
+      const open = nav.classList.contains('menu-open');
+      navToggle.setAttribute('aria-expanded', open);
+      navToggle.setAttribute('aria-label', t(open ? 'nav.menuZavrit' : 'nav.menuOtevrit'));
+    }
+    navToggle.addEventListener('click', () => { nav.classList.toggle('menu-open'); nastavMenuAria(); });
+    document.getElementById('nav-links').addEventListener('click', e => {
+      if (e.target.closest('a')) { nav.classList.remove('menu-open'); nastavMenuAria(); }
+    });
+
+    // =====================================================================
+    //  START
+    // =====================================================================
+    prelozStranku();
+    naplnVyberKategorii([]);
+    nactiKatalog();
+    zpracujAdresu();
+  </script>
 </body>
+
 </html>

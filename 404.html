@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Stránka nenalezena – Brusičství Janků</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <style>
+    :root {
+      --garnet: #8B1A2E;
+      --garnet-light: #A52840;
+      --garnet-dark: #5C0F1C;
+      --cream: #FAF7F2;
+      --cream-dark: #E4D9CC;
+      --gold: #B8943C;
+      --text: #2C1A14;
+      --text-muted: #7A5C48;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: var(--cream);
+      background-image: radial-gradient(ellipse 50% 60% at 10% 50%, rgba(139, 26, 46, 0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 90% 50%, rgba(45, 90, 46, 0.06) 0%, transparent 70%);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, serif;
+      text-align: center;
+    }
+
+    main { max-width: 560px; }
+
+    img { max-height: 120px; width: auto; margin-bottom: 1.8rem; }
+
+    .kod {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--garnet);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      letter-spacing: 3px;
+      color: var(--garnet-dark);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .divider {
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 1.6rem auto;
+    }
+
+    p {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2.2rem;
+    }
+
+    .akce { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    .btn {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 32px;
+      border: 1px solid;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary { background: var(--garnet); color: var(--cream); border-color: var(--garnet); }
+    .btn-primary:hover { background: var(--garnet-light); border-color: var(--garnet-light); }
+    .btn-secondary { color: var(--text); border-color: var(--cream-dark); }
+    .btn-secondary:hover { color: var(--garnet); border-color: var(--garnet); }
+    .btn:focus-visible { outline: 2px solid var(--garnet); outline-offset: 3px; }
+  </style>
+</head>
+
+<body>
+  <main>
+    <a href="/"><img src="/logo.png" alt="Brusičství Janků – úvodní stránka"></a>
+    <div class="kod" data-t="kod">Chyba 404</div>
+    <h1 data-t="nadpis">Tuto stránku jsme nenašli</h1>
+    <div class="divider"></div>
+    <p data-t="text">Omlouváme se, stránka, kterou hledáte, neexistuje nebo byla přesunuta. Zkontrolujte prosím adresu, nebo se
+      vraťte na úvodní stránku.</p>
+    <div class="akce">
+      <a href="/" class="btn btn-primary" data-t="domu">Zpět na úvodní stránku</a>
+      <a href="/#produkty" class="btn btn-secondary" data-t="sperky">Prohlédnout šperky</a>
+    </div>
+  </main>
+  <script>
+    // Stejný jazyk, jaký si návštěvník zvolil na webu
+    const T = {
+      en: { title: 'Page not found – Brusičství Janků', kod: 'Error 404', nadpis: 'We could not find this page', text: 'We are sorry, the page you are looking for does not exist or has been moved. Please check the address or return to the home page.', domu: 'Back to the home page', sperky: 'Browse our jewelry' },
+      de: { title: 'Seite nicht gefunden – Brusičství Janků', kod: 'Fehler 404', nadpis: 'Diese Seite wurde nicht gefunden', text: 'Es tut uns leid, die gesuchte Seite existiert nicht oder wurde verschoben. Bitte überprüfen Sie die Adresse oder kehren Sie zur Startseite zurück.', domu: 'Zur Startseite', sperky: 'Schmuck ansehen' },
+      sk: { title: 'Stránka sa nenašla – Brusičství Janků', kod: 'Chyba 404', nadpis: 'Túto stránku sme nenašli', text: 'Ospravedlňujeme sa, stránka, ktorú hľadáte, neexistuje alebo bola presunutá. Skontrolujte, prosím, adresu alebo sa vráťte na úvodnú stránku.', domu: 'Späť na úvodnú stránku', sperky: 'Prezrieť šperky' },
+      pl: { title: 'Nie znaleziono strony – Brusičství Janků', kod: 'Błąd 404', nadpis: 'Nie znaleźliśmy tej strony', text: 'Przepraszamy, strona, której szukasz, nie istnieje lub została przeniesiona. Sprawdź adres lub wróć na stronę główną.', domu: 'Powrót na stronę główną', sperky: 'Zobacz biżuterię' }
+    };
+    let j = null;
+    try { j = localStorage.getItem('jazyk'); } catch (e) { }
+    if (!j) j = (navigator.language || 'cs').slice(0, 2).toLowerCase();
+    if (j !== 'cs' && !T[j]) j = 'en';
+    if (T[j]) {
+      document.documentElement.lang = j;
+      document.title = T[j].title;
+      document.querySelectorAll('[data-t]').forEach(el => { el.textContent = T[j][el.dataset.t]; });
+    }
+  </script>
+</body>
+
+</html>
