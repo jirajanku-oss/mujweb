@@ -103,7 +103,7 @@ Rights arising from defective performance (complaints) are governed by the [Comp
 
 ## 7. Product and safety information
 
-7.1. The jewelry is made for the Seller by partner goldsmiths and placed on the market under the Seller’s name. Unless stated otherwise for a particular piece, the manufacturer is therefore the Seller: %JMENO%, %ADRESA%, %EMAIL%. Each piece is identified on the website by a code.
+7.1. The jewelry is made for the Seller by partner goldsmiths and placed on the market under the Seller’s name. Unless stated otherwise for a particular piece, the manufacturer is therefore the Seller: %JMENO%, %ADRESA%, %EMAIL%. Each piece has its own code, which is stated in the inquiry and in the offer.
 
 7.2. The jewelry is made of sterling silver (Ag 925) or 14-karat gold (Au 585). Silver jewelry may have a surface finish – rhodium plating or gold plating. The material of a particular piece is stated next to it on the website; the Seller also states the material and surface finish in the offer. Jewelry made of precious metals bears a hallmark in accordance with the Czech Hallmarking Act where required by law.
 

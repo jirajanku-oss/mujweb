@@ -103,7 +103,7 @@ Práva z vadného plnění (reklamace) upravuje [Reklamační řád](#dokument-r
 
 ## 7. Informace o výrobku a bezpečnosti
 
-7.1. Šperky pro prodávajícího vyrábějí spolupracující zlatníci a prodávající je uvádí na trh pod svým jménem. Výrobcem je proto, není-li u šperku uvedeno jinak, prodávající: %JMENO%, %ADRESA%, %EMAIL%. Každý šperk je na webu označen kódem.
+7.1. Šperky pro prodávajícího vyrábějí spolupracující zlatníci a prodávající je uvádí na trh pod svým jménem. Výrobcem je proto, není-li u šperku uvedeno jinak, prodávající: %JMENO%, %ADRESA%, %EMAIL%. Každý šperk má svůj kód, který se uvádí v poptávce a v nabídce.
 
 7.2. Šperky jsou vyrobeny ze stříbra o ryzosti Ag 925 nebo ze zlata o ryzosti Au 585. Stříbrné šperky mohou mít povrchovou úpravu – rhodiování nebo zlacení. Materiál konkrétního šperku je uveden u šperku na webu; materiál i povrchovou úpravu prodávající uvede také v nabídce. Šperky z drahých kovů jsou opatřeny puncovní značkou v souladu s puncovním zákonem, pokud to zákon vyžaduje.
 

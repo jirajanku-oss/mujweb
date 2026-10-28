@@ -720,7 +720,7 @@
 
     .item-size select {
       width: 100%;
-      max-width: 240px;
+      max-width: 100%;
       background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%237A5C48' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;
       border: 1px solid var(--cream-dark);
       border-bottom: 2px solid var(--cream-dark);
@@ -3260,7 +3260,7 @@
     function kartaHTML(p, i, predchoziVel) {
       const nazev = titulek(p);
       const obrazek = p.obrazek
-        ? `<img src="${esc(SLOZKA_OBRAZKU + encodeURIComponent(p.obrazek))}" alt="${esc(nazev + ' ' + p.kodZobrazeny)}" loading="lazy" data-i="${i}" onerror="obrazekChybi(this)">`
+        ? `<img src="${esc(SLOZKA_OBRAZKU + encodeURIComponent(p.obrazek))}" alt="${esc(nazev)}" loading="lazy" data-i="${i}" onerror="obrazekChybi(this)">`
         : esc(t('karta.foto'));
 
       let velikost = '';
@@ -3292,7 +3292,6 @@
         <div class="catalog-item">
           <div class="catalog-image-box">${obrazek}</div>
           <h3>${esc(nazev)}</h3>
-          <div class="item-code">${esc(t('karta.kod'))}: ${esc(p.kodZobrazeny)}</div>
           ${p.materialy.size ? `<div class="item-material">${esc(textMaterialu(p))}</div>` : ''}
           ${p.rozmer ? `<div class="item-weight">${esc(t('karta.rozmer'))}: ${esc(textRozmeru(p.rozmer))}</div>` : ''}
           ${pop ? `<p class="item-desc">${esc(pop)}</p>` : ''}
@@ -3301,7 +3300,7 @@
           ${velikost}
           <div class="item-footer">
             <div class="item-price-wrap">${cena}</div>
-            <button type="button" class="cart-icon" onclick="koupitSperk(${i})" title="${esc(t('karta.kosik'))}" aria-label="${esc(t('karta.kosik') + ': ' + nazev + ' ' + p.kodZobrazeny)}">
+            <button type="button" class="cart-icon" onclick="koupitSperk(${i})" title="${esc(t('karta.kosik'))}" aria-label="${esc(t('karta.kosik') + ': ' + nazev)}">
               <img src="kosik.png" alt="">
             </button>
           </div>
@@ -3518,7 +3517,7 @@
       pendingPolozka = { p, vel };
 
       document.getElementById('qtyItemLabel').textContent =
-        `${titulek(p)} ${p.kodZobrazeny}` + (vel !== null ? ', ' + t('mnozstvi.velikost', { v: fmtVel(vel) }) : '');
+        titulek(p) + (vel !== null ? ', ' + t('mnozstvi.velikost', { v: fmtVel(vel) }) : '');
       document.getElementById('qtyInput').value = '1';
 
       document.getElementById('customModal').style.display = 'flex';
