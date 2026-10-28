@@ -690,6 +690,12 @@
       margin-bottom: 0.4rem;
     }
 
+    .catalog-item .item-material {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
     .catalog-item .item-weight {
       font-size: 0.9rem;
       color: var(--text-muted);
@@ -2084,6 +2090,7 @@
         "karta.kod": "Kód",
         "karta.vaha": "Váha",
         "karta.vyrobce": "Výrobce",
+        "karta.rozmer": "Rozměr motivu",
         "karta.velikost": "Velikost",
         "karta.vyberte": "Vyberte velikost",
         "karta.napoveda": "Velikost = obvod prstu v mm",
@@ -2240,6 +2247,7 @@
         "karta.kod": "Code",
         "karta.vaha": "Weight",
         "karta.vyrobce": "Manufacturer",
+        "karta.rozmer": "Motif size",
         "karta.velikost": "Size",
         "karta.vyberte": "Select size",
         "karta.napoveda": "Size = finger circumference in mm",
@@ -2396,6 +2404,7 @@
         "karta.kod": "Art.-Nr.",
         "karta.vaha": "Gewicht",
         "karta.vyrobce": "Hersteller",
+        "karta.rozmer": "Motivgröße",
         "karta.velikost": "Größe",
         "karta.vyberte": "Größe wählen",
         "karta.napoveda": "Größe = Fingerumfang in mm",
@@ -2552,6 +2561,7 @@
         "karta.kod": "Kód",
         "karta.vaha": "Hmotnosť",
         "karta.vyrobce": "Výrobca",
+        "karta.rozmer": "Rozmer motívu",
         "karta.velikost": "Veľkosť",
         "karta.vyberte": "Vyberte veľkosť",
         "karta.napoveda": "Veľkosť = obvod prsta v mm",
@@ -2708,6 +2718,7 @@
         "karta.kod": "Kod",
         "karta.vaha": "Waga",
         "karta.vyrobce": "Producent",
+        "karta.rozmer": "Rozmiar motywu",
         "karta.velikost": "Rozmiar",
         "karta.vyberte": "Wybierz rozmiar",
         "karta.napoveda": "Rozmiar = obwód palca w mm",
@@ -2892,6 +2903,20 @@
     // Služby ve výběru formuláře: hodnota (česky, přijde vám e-mailem) → klíč překladu
     const SLUZBY_VE_FORMULARI = { 'Zakázková výroba': 'sluzba.zakazkova', 'Broušení kamene': 'sluzba.brouseni' };
 
+    // Materiály: sloupce v tabulce, které se zaškrtávají křížkem (X). Klíč = nadpis sloupce bez diakritiky
+    // a malými písmeny. Na webu se zobrazí v tomto pořadí, oddělené tečkou: „Stříbro 925/1000 • Vltavín • Granát“.
+    // Nový materiál přidejte sem (a do nástroje priprav-tabulku.html).
+    const MATERIALY = {
+      au:         { cs: 'Zlato 585/1000', en: 'Gold 585/1000', de: 'Gold 585/1000', sk: 'Zlato 585/1000', pl: 'Złoto 585/1000' },
+      ag:         { cs: 'Stříbro 925/1000', en: 'Silver 925/1000', de: 'Silber 925/1000', sk: 'Striebro 925/1000', pl: 'Srebro 925/1000' },
+      rhodiovano: { cs: 'rhodiováno', en: 'rhodium-plated', de: 'rhodiniert', sk: 'ródiované', pl: 'rodowane' },
+      zlaceno:    { cs: 'zlaceno', en: 'gold-plated', de: 'vergoldet', sk: 'pozlátené', pl: 'złocone' },
+      vltavin:    { cs: 'Vltavín', en: 'Moldavite', de: 'Moldavit', sk: 'Vltavín', pl: 'Mołdawit' },
+      granat:     { cs: 'Granát', en: 'Garnet', de: 'Granat', sk: 'Granát', pl: 'Granat' }
+    };
+    // Za zaškrtnuté se považuje: X, x, ✓, ✔, ☑, ANO, PRAVDA/TRUE, 1 (nebo zaškrtávací políčko v Excelu)
+    const jeZaskrtnuto = v => v === true || /^(x|✓|✔|☑|ano|a|pravda|true|yes|1)$/i.test(String(v ?? '').trim());
+
     // =====================================================================
     //  JAZYK STRÁNKY
     // =====================================================================
@@ -3070,7 +3095,9 @@
         czk: sl('cenaczk'), eur: sl('cenaeur'), vaha: sl('vaha'),
         velikost: sl('velikost'), mnozstvi: sl('mnozstvi'),
         nazev: sl('nazev'), popis: sl('popis'), vyrobce: sl('vyrobce'),
-        nazevJ: {}, popisJ: {}
+        nazevJ: {}, popisJ: {},
+        rozmer: hlavicka.findIndex(h => h === 'rozmermotivu' || h === 'rozmer'),
+        materialy: Object.keys(MATERIALY).map(k => [k, sl(k)]).filter(([, i]) => i >= 0)
       };
       Object.keys(JAZYKY).forEach(j => { S.nazevJ[j] = sl('nazev' + j); S.popisJ[j] = sl('popis' + j); });
 
@@ -3084,7 +3111,7 @@
       if (kurz === null) kurz = cislo(radky[hi][0]);
 
       // 1. sloupec bez nadpisu slouží jako skupina (např. „Náušnice+Prsten“)
-      const pouzite = new Set([S.kod, S.kodWeb, S.web, S.czk, S.eur, S.vaha, S.velikost, S.mnozstvi, S.nazev, S.popis, S.vyrobce].filter(i => i >= 0));
+      const pouzite = new Set([S.kod, S.kodWeb, S.web, S.czk, S.eur, S.vaha, S.velikost, S.mnozstvi, S.nazev, S.popis, S.vyrobce, S.rozmer].filter(i => i >= 0));
       const sloupecSkupiny = pouzite.has(0) ? -1 : 0;
 
       const mapa = new Map();
@@ -3104,7 +3131,7 @@
         if (!p) {
           p = {
             kategorie: nazevListu, skupina, kod: kodStr, kodWeb: '', obrazek: '',
-            nazev: '', popis: '', nazvy: {}, popisy: {}, vyrobce: '', czk: null, eur: null, vaha: '',
+            nazev: '', popis: '', nazvy: {}, popisy: {}, vyrobce: '', rozmer: '', materialy: new Set(), czk: null, eur: null, vaha: '',
             velikosti: new Map(), skladem: 0
           };
           mapa.set(klic, p);
@@ -3118,6 +3145,8 @@
           if (!p.popisy[j]) p.popisy[j] = text(S.popisJ[j]);
         });
         if (!p.vyrobce) p.vyrobce = text(S.vyrobce);
+        if (!p.rozmer) p.rozmer = text(S.rozmer);
+        S.materialy.forEach(([k, i]) => { if (jeZaskrtnuto(r[i])) p.materialy.add(k); });
         if (p.czk === null) p.czk = cislo(val(S.czk));
         if (p.eur === null) p.eur = cislo(val(S.eur));
         if (!p.vaha && !prazdne(val(S.vaha))) p.vaha = val(S.vaha);
@@ -3157,6 +3186,21 @@
       for (let v = VELIKOSTI_PRSTENU.od; v <= VELIKOSTI_PRSTENU.do; v += VELIKOSTI_PRSTENU.krok) s.add(v);
       p.velikosti.forEach((_, v) => s.add(v));
       return [...s].sort((a, b) => a - b);
+    }
+
+    // „Stříbro 925/1000 • Vltavín • Granát“ (rhodiováno/zlaceno se připojí ke kovu)
+    function textMaterialu(p) {
+      const vse = Object.keys(MATERIALY).filter(k => p.materialy.has(k));
+      const kovy = vse.filter(k => k === 'au' || k === 'ag').map(k => MATERIALY[k][JAZYK]);
+      const upravy = vse.filter(k => k === 'rhodiovano' || k === 'zlaceno').map(k => MATERIALY[k][JAZYK]);
+      const ostatni = vse.filter(k => !['au', 'ag', 'rhodiovano', 'zlaceno'].includes(k)).map(k => MATERIALY[k][JAZYK]);
+      const kov = kovy.join(' / ') + (upravy.length ? (kovy.length ? ', ' : '') + upravy.join(', ') : '');
+      return [kov, ...ostatni].filter(Boolean).join(' • ');
+    }
+
+    // „14x12mm“ → „14 × 12 mm“
+    function textRozmeru(s) {
+      return String(s).trim().replace(/(\d)\s*[x×]\s*(?=\d)/gi, '$1 × ').replace(/(\d)\s*mm\b/gi, '$1 mm');
     }
 
     function textVaha(v) {
@@ -3249,6 +3293,8 @@
           <div class="catalog-image-box">${obrazek}</div>
           <h3>${esc(nazev)}</h3>
           <div class="item-code">${esc(t('karta.kod'))}: ${esc(p.kodZobrazeny)}</div>
+          ${p.materialy.size ? `<div class="item-material">${esc(textMaterialu(p))}</div>` : ''}
+          ${p.rozmer ? `<div class="item-weight">${esc(t('karta.rozmer'))}: ${esc(textRozmeru(p.rozmer))}</div>` : ''}
           ${pop ? `<p class="item-desc">${esc(pop)}</p>` : ''}
           ${p.vaha ? `<div class="item-weight">${esc(t('karta.vaha'))}: ${esc(textVaha(p.vaha))}</div>` : ''}
           ${p.vyrobce ? `<div class="item-maker">${esc(t('karta.vyrobce'))}: ${esc(p.vyrobce)}</div>` : ''}
